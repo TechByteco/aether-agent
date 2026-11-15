@@ -32,9 +32,9 @@ def run_tunnel(port: int = 8000):
     npx_bin = shutil.which("npx.cmd") or shutil.which("npx") or r"C:\Program Files\nodejs\npx.cmd"
 
     providers = [
-        ("serveo", ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=30", "-R", f"80:localhost:{port}", "serveo.net"], r'https://[a-zA-Z0-9.\-_]+(?:\.serveousercontent\.com|\.serveo\.net)', False),
+        ("serveo", ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=30", "-R", f"80:127.0.0.1:{port}", "serveo.net"], r'https://[a-zA-Z0-9.\-_]+(?:\.serveousercontent\.com|\.serveo\.net)', False),
+        ("pinggy", ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=30", "-p", "443", f"-R0:127.0.0.1:{port}", "a.pinggy.io"], r'https://[a-zA-Z0-9.\-_]+\.pinggy\.(?:link|io)', False),
         ("localtunnel", f'"{npx_bin}" --yes localtunnel --port {port}', r'https://[a-zA-Z0-9.\-_]+loca\.lt', True),
-        ("pinggy", ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=30", "-p", "443", f"-R0:localhost:{port}", "a.pinggy.io"], r'https://[a-zA-Z0-9.\-_]+\.pinggy\.(?:link|io)', False),
     ]
 
     for name, cmd, pattern, use_shell in providers:
