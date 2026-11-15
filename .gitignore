@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env.local
+.env.production
+
+# Sensitive files — NEVER commit
+.env
+*.key
+*.pem
+*.secret
+
+# Heavy ML Models and Weights (Download via Ollama / HuggingFace)
+data/models/
+*.gguf
+*.safetensors
+*.pt
+*.bin
+*.onnx
+
+# Runtime Data, Logs, and Snapshots
+data/agency_agents_repo/
+data/briefings/
+data/cloud_vault/
+data/fulfillment_deliverables/
+data/leon_growth/
+data/leon_intelligence/
+data/leon_ventures_live/
+data/logs/
+data/memory/
+data/screenshots/
+data/training/
+data/*.zip
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/*.sqlite
+data/improvement_log.jsonl
+data/latest_improvement_report.json
+data/infinite_evolution_state.json
+data/perpetual_dispatcher_state.json
+data/tools_vault.json
+data/leon_ventures.json
+
+# Generated tools
+src/aether/tools/generated/
+
+# IDE / OS
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
