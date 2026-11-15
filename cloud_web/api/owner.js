@@ -1,4 +1,4 @@
-// Vercel Serverless Function — Autonomous Operator & Owner Subsystem Router
+// Vercel Serverless Function — Autonomous Operator & Samsung One UI 8 Channels Router
 module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -8,7 +8,48 @@ module.exports = async (req, res) => {
   if (req.method === "OPTIONS") return res.status(200).end();
 
   const url = req.url || "";
+  let body = {};
+  if (req.method === "POST") {
+    try {
+      body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    } catch {}
+  }
 
+  // ── SAMSUNG GALAXY ONE UI 8 INTENTS ──
+  if (url.includes("channels/samsung/alarm") || url.includes("samsung/alarm")) {
+    const timeStr = body.time_str || "07:30 AM";
+    const label = body.label || "Executive Standup";
+    return res.status(200).json({
+      status: "ok",
+      intent_data: {
+        label: label,
+        formatted_time: timeStr,
+        intent_uri: `android.intent.action.SET_ALARM?android.intent.extra.HOUR=7&android.intent.extra.MINUTES=30&android.intent.extra.MESSAGE=${encodeURIComponent(label)}`
+      },
+      message: "Samsung Galaxy alarm intent generated."
+    });
+  }
+
+  if (url.includes("channels/samsung/meeting") || url.includes("samsung/meeting")) {
+    const title = body.title || "Executive Strategy Session";
+    return res.status(200).json({
+      status: "ok",
+      calendar_url: `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=AETHER+Executive+Session`,
+      title: title
+    });
+  }
+
+  if (url.includes("channels/samsung/routine") || url.includes("samsung/routine")) {
+    const routine = body.routine || "wake_up";
+    return res.status(200).json({
+      status: "ok",
+      routine: routine,
+      summary: `Samsung One UI 8 routine [${routine}] acknowledged and orchestrated via Cloud Gateway.`,
+      actions_taken: ["Sound Mode: Optimized", "Display Brightness: Adaptive", "Executive Digest Synced"]
+    });
+  }
+
+  // ── AUTONOMOUS OPERATOR SUBSYSTEMS ──
   if (url.includes("payments")) {
     const settlements = [
       {

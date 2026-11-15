@@ -1,4 +1,4 @@
-// Vercel Serverless Function — Enterprise CRM Pipeline & Ventures Router
+// Vercel Serverless Function — Enterprise CRM Pipeline, Deals & Webhooks Router
 module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -13,6 +13,23 @@ module.exports = async (req, res) => {
     try {
       body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
     } catch {}
+  }
+
+  // Webhook Simulation
+  if (url.includes("webhooks") || url.includes("simulate")) {
+    const ventureName = body.venture_name || "CogniGuard Cyber";
+    const amountInr = body.amount_inr || 45000;
+    const email = body.email || "client@apexfintech.io";
+    const paymentId = "pay_sim_" + Date.now();
+    return res.status(200).json({
+      status: "ok",
+      payment_id: paymentId,
+      amount: amountInr,
+      currency: "INR",
+      venture: ventureName,
+      customer_email: email,
+      message: `Simulated webhook received: ₹${amountInr.toLocaleString('en-IN')} payment confirmed and attributed to ${ventureName}.`
+    });
   }
 
   if (url.includes("advance_stage")) {

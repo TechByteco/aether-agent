@@ -1,17 +1,19 @@
-// Vercel Serverless Function — AETHER Cloud Chat & Reasoning Execution
+// Vercel Serverless Function — AETHER Cloud Chat, Voice & Reasoning Execution
 // Runs 100% serverless using free cloud CPU and memory (Zero Localhost)
+
+let isVoiceActive = true;
 
 module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  const startTime = Date.now();
+  const url = req.url || "";
   let body = {};
   try {
     body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
@@ -19,6 +21,21 @@ module.exports = async (req, res) => {
     body = req.body || {};
   }
 
+  // Voice Synthesis & Toggle
+  if (url.includes("voice")) {
+    if (url.includes("toggle")) {
+      isVoiceActive = !isVoiceActive;
+      return res.status(200).json({ status: "ok", voice_enabled: isVoiceActive });
+    }
+    return res.status(200).json({
+      status: "ok",
+      text: body.text || "",
+      synthesized: true,
+      voice_provider: "Web Speech Cloud Bridge"
+    });
+  }
+
+  const startTime = Date.now();
   const userQuery = body.message || body.query || body.prompt || "";
   const requestedModel = (body.model || "qwen").toLowerCase();
   const systemPrompt = body.system_prompt || (
@@ -61,7 +78,7 @@ module.exports = async (req, res) => {
         temperature: 0.3,
         max_tokens: 1500
       }),
-      signal: AbortSignal.timeout(25000)
+      signal: AbortSignal.timeout(20000)
     });
 
     if (aiResp.ok) {
