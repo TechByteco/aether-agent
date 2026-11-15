@@ -3,13 +3,16 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/static/(.*)", "destination": "/$1" },
-    { "source": "/api/chat", "destination": "/api/chat.js" },
-    { "source": "/api/models", "destination": "/api/models.js" },
-    { "source": "/api/huggingface", "destination": "/api/huggingface.js" },
-    { "source": "/api/crm/pipeline", "destination": "/api/crm.js" },
-    { "source": "/api/crm/(.*)", "destination": "/api/crm.js" },
-    { "source": "/api/status", "destination": "/api/status.js" },
-    { "source": "/api/owner/health", "destination": "/api/status.js" },
-    { "source": "/api/online/status", "destination": "/api/status.js" }
+    { "source": "/api/crm/(.*)", "destination": "/api/crm" },
+    { "source": "/api/owner/(.*)", "destination": "/api/owner" },
+    { "source": "/api/email/(.*)", "destination": "/api/email" },
+    { "source": "/api/evolution/(.*)", "destination": "/api/evolution" },
+    { "source": "/api/rlaif/(.*)", "destination": "/api/evolution" },
+    { "source": "/api/agency/(.*)", "destination": "/api/agency" },
+    { "source": "/api/leon/(.*)", "destination": "/api/leon" },
+    { "source": "/api/workspace/(.*)", "destination": "/api/workspace" },
+    { "source": "/api/goals", "destination": "/api/workspace" },
+    { "source": "/api/models/(.*)", "destination": "/api/models" },
+    { "source": "/api/online/(.*)", "destination": "/api/status" }
   ]
 }

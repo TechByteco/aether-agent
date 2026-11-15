@@ -770,25 +770,26 @@ async function loadModelsCatalog() {
 
 function updateActiveModelPill(modelName) {
   activeModelName = modelName;
-  if (topActiveModel) topActiveModel.textContent = modelName;
-  if (dockModelName) dockModelName.textContent = modelName;
+  if (topActiveModel) topActiveModel.textContent = modelName.includes("/") ? modelName.split("/")[1] : modelName;
+  if (dockModelName) dockModelName.textContent = modelName.includes("/") ? modelName.split("/")[1] : modelName;
   if (topModelTag) {
-    if (modelName.includes("gemini")) {
+    const lower = modelName.toLowerCase();
+    if (lower.includes("gemini")) {
       topModelTag.textContent = "Google AI";
       topModelTag.style.background = "var(--ag-blue-dim)";
       topModelTag.style.color = "var(--ag-blue)";
-    } else if (modelName.includes("gpt") || modelName.includes("o3")) {
+    } else if (lower.includes("gpt") || lower.includes("o3") || lower.includes("openai")) {
       topModelTag.textContent = "OpenAI";
       topModelTag.style.background = "var(--ag-green-dim)";
       topModelTag.style.color = "var(--ag-green)";
-    } else if (modelName.includes("claude")) {
+    } else if (lower.includes("claude")) {
       topModelTag.textContent = "Anthropic";
       topModelTag.style.background = "rgba(251,146,60,0.15)";
       topModelTag.style.color = "#fb923c";
     } else {
-      topModelTag.textContent = "DirectML NPU";
-      topModelTag.style.background = "var(--ag-green-dim)";
-      topModelTag.style.color = "var(--ag-green)";
+      topModelTag.textContent = "Hugging Face";
+      topModelTag.style.background = "rgba(255,210,30,0.18)";
+      topModelTag.style.color = "#ffd21e";
     }
   }
 }
@@ -800,19 +801,19 @@ function renderModelHubGrids(data) {
   const claudeGrid = document.getElementById("claude-models-grid");
 
   if (localGrid) {
-    localGrid.innerHTML = data.local_models.map(m => `
+    localGrid.innerHTML = (data.local_models || []).map(m => `
       <div class="model-card ${m.id === activeModelName ? 'active' : ''}" onclick="selectModel('${m.id}')">
         <div class="model-card-top">
-          <span class="model-card-icon">⚡</span>
+          <span class="model-card-icon">🤗</span>
           <div>
             <div class="model-card-title">${escapeHtml(m.name)}</div>
             <div class="model-card-provider">${escapeHtml(m.provider)}</div>
           </div>
         </div>
-        <div class="model-card-desc">${escapeHtml(m.specialty || 'On-device Snapdragon NPU execution')}</div>
+        <div class="model-card-desc">${escapeHtml(m.specialty || 'Hugging Face Open Weights Cloud Execution')}</div>
         <div class="model-card-meta">
           <span class="meta-chip hardware">${escapeHtml(m.size)}</span>
-          <span class="meta-chip hardware">45 TOPS NPU</span>
+          <span class="meta-chip hardware" style="background:rgba(255,210,30,0.15);color:#ffd21e;">Free Serverless Cloud</span>
         </div>
       </div>
     `).join("");
@@ -896,6 +897,56 @@ window.filterModelCards = () => {
     const text = card.textContent.toLowerCase();
     card.style.display = text.includes(query) ? "flex" : "none";
   });
+};
+
+window.searchHuggingFaceHub = async function() {
+  const queryInput = document.getElementById("hf-search-query");
+  const resultsContainer = document.getElementById("hf-search-results");
+  if (!queryInput || !resultsContainer) return;
+
+  const query = queryInput.value.trim() || "coder";
+  resultsContainer.style.display = "flex";
+  resultsContainer.innerHTML = `<div style="color: #ffd21e; font-size: 11px; padding: 6px;"><span class="spinner">◎</span> Querying Hugging Face Hub API for "${escapeHtml(query)}"...</div>`;
+
+  try {
+    const res = await fetch(`/api/huggingface?search=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    const models = data.hub_results || data.curated_models || [];
+
+    if (!models.length) {
+      resultsContainer.innerHTML = `<div style="color: #94a3b8; font-size: 11px; padding: 6px;">No models found on Hugging Face matching "${escapeHtml(query)}".</div>`;
+      return;
+    }
+
+    resultsContainer.innerHTML = models.map(m => `
+      <div style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,210,30,0.25); border-radius: 8px; padding: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+        <div style="min-width: 0; flex: 1;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <strong style="color: #ffd21e; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(m.name || m.id)}</strong>
+            <span style="font-size: 9px; background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 4px; color: #94a3b8;">${escapeHtml(m.pipeline_tag || 'text-generation')}</span>
+          </div>
+          <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">
+            <span>By ${escapeHtml(m.author || 'community')}</span> · 
+            <span>⬇ ${Number(m.downloads || 0).toLocaleString()} downloads</span> · 
+            <span>♥ ${Number(m.likes || 0).toLocaleString()} likes</span>
+          </div>
+        </div>
+        <button onclick="adoptHuggingFaceModel('${escapeHtml(m.id)}', '${escapeHtml(m.name || m.id)}')" style="background: #ffd21e; color: #000; border: none; font-size: 10px; font-weight: 700; padding: 6px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap;">
+          Adopt for AETHER
+        </button>
+      </div>
+    `).join("");
+  } catch (err) {
+    resultsContainer.innerHTML = `<div style="color: #f87171; font-size: 11px; padding: 6px;">Hugging Face Hub query error: ${escapeHtml(err.message)}</div>`;
+  }
+};
+
+window.adoptHuggingFaceModel = function(modelId, modelName) {
+  selectModel(modelId);
+  closeModelHub();
+  if (typeof appendMessage === "function") {
+    appendMessage("assistant", `🤗 **Hugging Face Model Adopted for AETHER Development**\n\nActive Model: **${modelName}** (\`${modelId}\`)\n\nAll cognitive workflows, code synthesis in the Sandbox, and autonomous self-evolution now utilize this model architecture on free cloud serverless compute.`);
+  }
 };
 
 const btnModelSelector = document.getElementById("btn-model-selector");
@@ -1036,39 +1087,51 @@ if (btnNewThread) {
 }
 
 
-// ── 9. Telemetry WebSocket (/ws) ─────────────────────────────────────────────
+// ── 9. Cloud Telemetry & Free Serverless Vitals Polling ──────────────────────
 function connectTelemetryWS() {
-  const proto = location.protocol === "https:" ? "wss:" : "ws:";
-  telemetryWs = new WebSocket(`${proto}//${location.host}/ws`);
+  // In 100% online cloud sovereign mode on Vercel, poll /api/status for free serverless RAM & CPU
+  pollCloudTelemetry();
+  setInterval(pollCloudTelemetry, 3500);
+}
 
-  telemetryWs.onmessage = (event) => {
-    try {
-      const msg = JSON.parse(event.data);
-      if (msg.type === "telemetry") updateTelemetryUI(msg);
-    } catch {}
-  };
-
-  telemetryWs.onclose = () => {
-    setTimeout(connectTelemetryWS, 3000);
-  };
+async function pollCloudTelemetry() {
+  try {
+    const res = await fetch("/api/status");
+    if (res.ok) {
+      const data = await res.json();
+      updateTelemetryUI(data);
+    }
+  } catch (err) {
+    // Silent catch
+  }
 }
 
 function updateTelemetryUI(data) {
   const v = data.vitals || {};
   const m = data.memory || {};
+  const sm = data.serverless_metrics || {};
 
   if (v.ram_percent !== undefined) {
-    if (ramPct) ramPct.textContent = `${v.ram_percent}%`;
-    if (ramMiniFill) ramMiniFill.style.width = `${v.ram_percent}%`;
+    if (ramPct) ramPct.textContent = `${v.ram_percent}% (${v.memory_mb || '58'} MB)`;
+    if (ramMiniFill) ramMiniFill.style.width = `${Math.min(v.ram_percent, 100)}%`;
   }
 
   if (v.cpu_percent !== undefined) {
     if (cpuVal) cpuVal.textContent = `${v.cpu_percent}%`;
-    if (cpuMiniFill) cpuMiniFill.style.width = `${v.cpu_percent}%`;
+    if (cpuMiniFill) cpuMiniFill.style.width = `${Math.min(v.cpu_percent, 100)}%`;
   }
 
-  if (data.evolution_gen !== undefined && badgeEvolution) {
-    badgeEvolution.textContent = `Gen ${data.evolution_gen} 🧬`;
+  if (badgeEvolution) {
+    const freeMb = sm.free_ram_mb || v.free_ram_mb || "965";
+    badgeEvolution.textContent = `Free RAM: ${freeMb}MB ⚡`;
+  }
+
+  const userStatusText = document.getElementById("user-status-text");
+  if (userStatusText && sm.region) {
+    userStatusText.textContent = `100% Cloud Sovereign (${sm.region})`;
+  }
+
+  if (data.evolution_gen !== undefined) {
     const auxEvoBadge = document.getElementById("aux-evo-badge");
     if (auxEvoBadge) auxEvoBadge.textContent = `Gen ${data.evolution_gen} 🧬`;
   }

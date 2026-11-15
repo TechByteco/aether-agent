@@ -195,17 +195,17 @@
         </div>
 
         <div class="rail-bottom">
-          <!-- Mini Hardware Vitals -->
+          <!-- Mini Cloud Serverless Vitals -->
           <div class="mini-vitals-card">
             <div class="mini-vitals-row">
-              <span class="label">RAM</span>
+              <span class="label">Free Cloud RAM</span>
               <span class="val" id="ram-pct">--%</span>
             </div>
             <div class="mini-bar-bg">
-              <div class="mini-bar-fill" id="ram-mini-fill" style="width: 40%;"></div>
+              <div class="mini-bar-fill" id="ram-mini-fill" style="width: 25%;"></div>
             </div>
             <div class="mini-vitals-row mt-6">
-              <span class="label">Oryon CPU</span>
+              <span class="label">Edge vCPU</span>
               <span class="val" id="cpu-val">--%</span>
             </div>
             <div class="mini-bar-bg">
@@ -216,8 +216,8 @@
           <div class="user-profile-row">
             <div class="user-avatar">◈</div>
             <div class="user-info">
-              <div class="user-name">Engineer</div>
-              <div class="user-status">Windows ARM64</div>
+              <div class="user-name">Lead Engineer</div>
+              <div class="user-status" id="user-status-text">100% Cloud Sovereign</div>
             </div>
           </div>
         </div>
@@ -1117,6 +1117,25 @@
       </div>
 
       <div class="model-cards-scroll">
+        <!-- Live Hugging Face Hub Search & Adoption Section -->
+        <div style="margin: 0 0 16px 0; background: rgba(255,210,30,0.05); border: 1px solid rgba(255,210,30,0.25); border-radius: 12px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 18px;">🤗</span>
+              <strong style="color: #ffd21e; font-size: 13px;">Hugging Face Hub Live Explorer & Autonomous Model Adoption</strong>
+            </div>
+            <span class="badge" style="background: rgba(255,210,30,0.18); color: #ffd21e; font-size: 10px;">Free Serverless Cloud AI</span>
+          </div>
+          <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 10px 0; line-height: 1.4;">
+            Search and adopt any state-of-the-art open-weights model from Hugging Face Hub for AETHER's autonomous development and reasoning.
+          </p>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="hf-search-query" class="ag-input-sm" placeholder="e.g. qwen, deepseek, llama, starcoder, mistral..." style="flex: 1; font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,210,30,0.3); border-radius: 8px; color: #fff; padding: 8px 12px;" onkeydown="if(event.key==='Enter') searchHuggingFaceHub()">
+            <button class="ag-btn-sm" onclick="searchHuggingFaceHub()" style="background: #ffd21e; color: #000; font-weight: 600; border: none; padding: 0 16px; border-radius: 8px; cursor: pointer; white-space: nowrap;">Search HF Hub</button>
+          </div>
+          <div id="hf-search-results" style="display: none; margin-top: 12px; max-height: 220px; overflow-y: auto; flex-direction: column; gap: 8px;"></div>
+        </div>
+
         <!-- Section: Hugging Face & Open Weights Models -->
         <div class="model-section-title">
           <span>🤗 HUGGING FACE & OPEN WEIGHTS MODELS (FREE CLOUD COMPUTE)</span>

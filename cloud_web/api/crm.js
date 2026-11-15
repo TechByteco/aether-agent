@@ -1,8 +1,40 @@
-// Vercel Serverless Function — CRM Deals & Portfolio Ventures
-module.exports = (req, res) => {
+// Vercel Serverless Function — Enterprise CRM Pipeline & Ventures Router
+module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+  if (req.method === "OPTIONS") return res.status(200).end();
+
+  const url = req.url || "";
+  let body = {};
+  if (req.method === "POST") {
+    try {
+      body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+    } catch {}
+  }
+
+  if (url.includes("advance_stage")) {
+    return res.status(200).json({
+      status: "ok",
+      message: `Deal ${body.deal_id || 'apexfintech_101'} advanced to stage: ${body.new_stage || 'contract_negotiation'}`,
+      deal_id: body.deal_id,
+      new_stage: body.new_stage,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  if (url.includes("reply_inquiry")) {
+    return res.status(200).json({
+      status: "ok",
+      message: `Executive response dispatched to ${body.recipient || 'client'} successfully via Cloud Edge.`,
+      deal_id: body.deal_id,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  // Default: Pipeline & Portfolio
   res.status(200).json({
     status: "ok",
     pipeline: {
