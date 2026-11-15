@@ -226,8 +226,8 @@ def benchmark_fast_cortex() -> Dict[str, Any]:
     results: Dict[str, float] = {}
     try:
         sys.path.insert(0, str(SRC))
-        from aether.brain.fast_cortex import (FastCortexEngine,  # type: ignore
-                                              fast_cortex)
+        from aether.brain.fast_cortex import FastCortexEngine  # type: ignore
+        from aether.brain.fast_cortex import fast_cortex
         prompts = [
             "What time is it?", "Tell me about machine learning",
             "Set an alarm for 7am", "Show AETHER status",

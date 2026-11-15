@@ -445,19 +445,19 @@ class CloudEmailAgent:
             f"Return ONLY valid JSON."
         )
 
-        res = multi_provider_router.complete_chat(
-            messages=[{"role": "user", "content": prompt}],
-            intent="deliberate",
-            temperature=0.2,
-            max_tokens=600,
-        )
-        content = res.get("content", "")
-
         try:
+            res = multi_provider_router.complete_chat(
+                messages=[{"role": "user", "content": prompt}],
+                intent="deliberate",
+                temperature=0.2,
+                max_tokens=600,
+            )
+            content = res.get("content", "")
             cleaned = re.sub(r"```json|```", "", content).strip()
             parsed = json.loads(cleaned)
             return parsed
-        except Exception:
+        except Exception as e:
+            logger.warning(f"LLM single email summarization fallback triggered: {e}")
             # Deterministic fallback summary
             sender_clean = sender.split("<")[0].strip()
             return {

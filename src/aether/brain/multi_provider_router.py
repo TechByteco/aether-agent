@@ -321,6 +321,14 @@ class MultiProviderRouter:
 
         # 1. Local Ollama Execution
         if selected_prov == "ollama":
+            import socket
+            _s = socket.socket()
+            _s.settimeout(0.5)
+            try:
+                _s.connect(("127.0.0.1", 11434))
+                _s.close()
+            except Exception:
+                raise RuntimeError("Local Ollama is offline (port 11434 unreachable)")
             try:
                 # If target_model is a cloud model name (e.g. gemini or claude), fallback to local_model
                 installed_models = [m.get("model", m.get("name", "")) for m in ollama.list().get("models", [])]
