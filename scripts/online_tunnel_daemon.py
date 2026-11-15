@@ -31,70 +31,79 @@ def run_tunnel(port: int = 8000):
 
     npx_bin = shutil.which("npx.cmd") or shutil.which("npx") or r"C:\Program Files\nodejs\npx.cmd"
 
-    providers = [
-        ("serveo", ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=30", "-R", f"80:127.0.0.1:{port}", "serveo.net"], r'https://[a-zA-Z0-9.\-_]+(?:\.serveousercontent\.com|\.serveo\.net)', False),
-        ("pinggy", ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=30", "-p", "443", f"-R0:127.0.0.1:{port}", "a.pinggy.io"], r'https://[a-zA-Z0-9.\-_]+\.pinggy\.(?:link|io)', False),
-        ("localtunnel", f'"{npx_bin}" --yes localtunnel --port {port}', r'https://[a-zA-Z0-9.\-_]+loca\.lt', True),
-    ]
+    while True:
+        providers = [
+            ("serveo", ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=15", "-o", "ServerAliveCountMax=3", "-R", f"80:127.0.0.1:{port}", "serveo.net"], r'https://[a-zA-Z0-9.\-_]+(?:\.serveousercontent\.com|\.serveo\.net)', False),
+            ("localtunnel", f'"{npx_bin}" --yes localtunnel --port {port}', r'https://[a-zA-Z0-9.\-_]+loca\.lt', True),
+            ("pinggy", ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=15", "-o", "ServerAliveCountMax=3", "-p", "443", f"-R0:127.0.0.1:{port}", "a.pinggy.io"], r'https://[a-zA-Z0-9.\-_]+\.pinggy\.(?:link|io)', False),
+        ]
 
-    for name, cmd, pattern, use_shell in providers:
-        print(f"[AETHER Tunnel] Attempting provider: {name}...", flush=True)
-        try:
-            proc = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                bufsize=1,
-                creationflags=flags,
-                shell=use_shell,
-            )
+        for name, cmd, pattern, use_shell in providers:
+            print(f"[AETHER Tunnel] Attempting provider: {name}...", flush=True)
+            proc = None
+            try:
+                proc = subprocess.Popen(
+                    cmd,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    bufsize=1,
+                    creationflags=flags,
+                    shell=use_shell,
+                )
 
-            url_found = []
+                url_found = []
 
-            def _reader():
-                try:
-                    for line in iter(proc.stdout.readline, ''):
-                        if not line:
-                            break
-                        m = re.search(pattern, line)
-                        if m:
-                            url_found.append(m.group(0))
-                            break
-                except Exception:
-                    pass
+                def _reader():
+                    try:
+                        for line in iter(proc.stdout.readline, ''):
+                            if not line:
+                                break
+                            m = re.search(pattern, line)
+                            if m:
+                                url_found.append(m.group(0))
+                                break
+                    except Exception:
+                        pass
 
-            t = threading.Thread(target=_reader, daemon=True)
-            t.start()
-            t.join(timeout=8.0)
+                t = threading.Thread(target=_reader, daemon=True)
+                t.start()
+                t.join(timeout=15.0)
 
-            if url_found and proc.poll() is None:
-                public_url = url_found[0]
-                print(f"[AETHER Tunnel] Online via {name.upper()}: {public_url}", flush=True)
-                state = {
-                    "active": True,
-                    "provider": name,
-                    "url": public_url,
-                    "port": port,
-                    "pid": proc.pid,
-                    "started_at": time.time(),
-                    "updated_at": time.time(),
-                }
-                update_state(state)
-
-                # Keep running and update state every 10 seconds
-                while proc.poll() is None:
-                    time.sleep(10)
-                    state["updated_at"] = time.time()
+                if url_found and proc.poll() is None:
+                    public_url = url_found[0]
+                    print(f"[AETHER Tunnel] Online via {name.upper()}: {public_url}", flush=True)
+                    state = {
+                        "active": True,
+                        "provider": name,
+                        "url": public_url,
+                        "port": port,
+                        "pid": proc.pid,
+                        "started_at": time.time(),
+                        "updated_at": time.time(),
+                    }
                     update_state(state)
 
-                print(f"[AETHER Tunnel] Process exited with code {proc.poll()}", flush=True)
+                    # Keep running and update state every 10 seconds
+                    while proc.poll() is None:
+                        time.sleep(10)
+                        state["updated_at"] = time.time()
+                        update_state(state)
 
-        except Exception as e:
-            print(f"[AETHER Tunnel] Error on {name}: {e}", flush=True)
-            continue
+                    print(f"[AETHER Tunnel] Provider {name} exited with code {proc.poll()}. Reconnecting...", flush=True)
 
-    update_state({"active": False, "provider": None, "url": None, "port": port})
+            except Exception as e:
+                print(f"[AETHER Tunnel] Error on {name}: {e}", flush=True)
+                if proc and proc.poll() is None:
+                    try:
+                        proc.terminate()
+                    except Exception:
+                        pass
+                continue
+
+        update_state({"active": False, "provider": None, "url": None, "port": port})
+        print("[AETHER Tunnel] All tunnel providers cycled. Cooling down for 5 seconds before next supervisor loop...", flush=True)
+        time.sleep(5)
 
 
 if __name__ == "__main__":
