@@ -74,6 +74,7 @@ module.exports = async (req, res) => {
     agents: [
       { id: "agent_architect", name: "System Architect", role: "High-order distributed systems & edge topology", status: "ready", model: "Qwen 2.5 Coder 32B" },
       { id: "agent_coder", name: "Autonomous Coder", role: "Full-stack code generation, refactoring, and test suite creation", status: "active", model: "Qwen 2.5 Coder 32B" },
+      { id: "agent_obscura", name: "Web Intelligence Navigator", role: "Lightweight headless browser automation & SPA scraping via Obscura (~30MB RAM)", status: "active", model: "Obscura Rust V8" },
       { id: "agent_reasoner", name: "Deep Reasoner", role: "Mathematical proofs, algorithmic logic & verification", status: "ready", model: "DeepSeek R1 Distill" },
       { id: "agent_executive", name: "Executive Triage", role: "Deal negotiation, financial forecasting & operational dispatch", status: "ready", model: "Llama 3.3 70B" },
       { id: "agent_sre", name: "Site Reliability Engineer", role: "Zero-localhost serverless health, memory bounds & Vercel edge telemetry", status: "monitoring", model: "Mistral Nemo 12B" },
