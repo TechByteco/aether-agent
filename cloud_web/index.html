@@ -819,6 +819,26 @@
               <button class="ag-btn-xs secondary" onclick="openOperatorPanel()" style="flex: 1;">⚡ Operator Panel</button>
             </div>
 
+            <!-- Obscura Web Intelligence Navigator Box -->
+            <div style="margin-top: 12px; padding: 12px; background: rgba(0, 242, 254, 0.03); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="font-size: 11px; font-weight: 700; color: #00f2fe; display: flex; align-items: center; gap: 6px;">
+                  <span>🌐 Obscura Web Intelligence</span>
+                  <span class="badge" style="background: rgba(0,242,254,0.15); color: #00f2fe; font-size: 9px; padding: 2px 6px;">~30MB V8 Headless</span>
+                </div>
+                <span class="badge green" id="obscura-badge" style="font-size: 9px;">Active</span>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <input type="text" id="obscura-url-input" class="ag-input-sm" placeholder="https://news.ycombinator.com" value="https://news.ycombinator.com" style="flex: 1;" />
+                <button class="ag-btn-xs primary" onclick="runObscuraDistillUI()" id="obscura-btn">⚡ Distill</button>
+              </div>
+              <div id="obscura-metrics-bar" style="display: none; margin-top: 8px; font-size: 10px; color: #94a3b8; justify-content: space-between;">
+                <span id="obscura-token-savings" style="color: #10b981; font-weight: 600;"></span>
+                <span id="obscura-ram-usage" style="color: #38bdf8;">RAM: ~32.5 MB</span>
+              </div>
+              <div id="obscura-result-box" style="display: none; margin-top: 8px; max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px; font-size: 11px; font-family: monospace; white-space: pre-wrap; color: #cbd5e1;"></div>
+            </div>
+
             <!-- Specialists Card Stream -->
             <div class="panel-section-title mt-16">
               <span>Active Specialists</span>

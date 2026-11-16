@@ -2489,6 +2489,40 @@ window.syncAgencyTraining = async function() {
   }
 };
 
+window.runObscuraDistillUI = async function() {
+  const urlInput = document.getElementById("obscura-url-input");
+  const btn = document.getElementById("obscura-btn");
+  const metricsBar = document.getElementById("obscura-metrics-bar");
+  const savingsSpan = document.getElementById("obscura-token-savings");
+  const resultBox = document.getElementById("obscura-result-box");
+  const targetUrl = (urlInput && urlInput.value.trim()) || "https://news.ycombinator.com";
+
+  if (btn) btn.innerText = "⏳ Distilling...";
+  try {
+    const res = await fetch('/api/agency/browse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: targetUrl })
+    });
+    const data = await res.json();
+    if (metricsBar) metricsBar.style.display = "flex";
+    if (savingsSpan) {
+      savingsSpan.innerText = `Token Savings: ${data.token_savings_pct || 88}% (${data.raw_char_count || 0} -> ${data.distilled_char_count || 0} chars)`;
+    }
+    if (resultBox) {
+      resultBox.style.display = "block";
+      resultBox.innerText = `[${data.title || "Page"}]\nURL: ${data.url}\n\n${data.markdown || ""}`;
+    }
+  } catch(err) {
+    if (resultBox) {
+      resultBox.style.display = "block";
+      resultBox.innerText = "Error distilling URL: " + err.message;
+    }
+  } finally {
+    if (btn) btn.innerText = "⚡ Distill";
+  }
+};
+
 // ── GMAIL & EMAIL INTELLIGENCE HUB ──────────────────────────────────────────
 window.loadEmailHub = async function() {
   const container = document.getElementById("email-inbox-container");
