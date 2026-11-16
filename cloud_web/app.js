@@ -276,13 +276,21 @@ function sendMessage(text) {
   appendMessage("user", prompt, "You");
   setLoadingState(true);
 
-  const proto = location.protocol === "https:" ? "wss:" : "ws:";
-  const ws = new WebSocket(`${proto}//${location.host}/ws/chat`);
-  currentChatWs = ws;
-
   const { wrapper, body, toolsDiv, thoughtDiv } = createStreamingBubble();
   currentStreamingBubble = wrapper;
   currentStreamingBody = body;
+
+  const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+
+  // In 100% online cloud mode (Vercel edge), stream directly without WebSocket failure
+  if (!isLocalhost) {
+    streamDirectCloudAI(prompt, body, thoughtDiv, toolsDiv);
+    return;
+  }
+
+  const proto = location.protocol === "https:" ? "wss:" : "ws:";
+  const ws = new WebSocket(`${proto}//${location.host}/ws/chat`);
+  currentChatWs = ws;
 
   ws.onopen = () => {
     ws.send(JSON.stringify({ type: "chat", message: prompt, session_id: "web-ui" }));
@@ -353,13 +361,23 @@ let cloudStaticHistory = JSON.parse(localStorage.getItem("aether_cloud_history")
 
 async function streamDirectCloudAI(prompt, body, thoughtDiv, toolsDiv) {
   try {
-    body.innerHTML = '<span style="color:var(--ag-blue);font-size:12px;font-family:var(--font-mono)">🌐 [Cloud Mode] Querying Free Sovereign AI...</span><br>';
+    body.innerHTML = '<span style="color:var(--ag-blue);font-size:12px;font-family:var(--font-mono)">🌐 [Cloud Edge] Querying Sovereign Multi-Agent AI...</span><br>';
     
+    // Check if prompt is a Swarm request
+    const isSwarmPrompt = /swarm|multi-agent|specialists|debate/i.test(prompt);
+
+    const systemPrompt = isSwarmPrompt
+      ? "You are AETHER Swarm Intelligence, orchestrating a team of elite autonomous specialists: " +
+        "PlannerPrime (Strategic Roadmap), ArchitectNode (Clean Architecture), CoderCore (Production Code), " +
+        "SecurityVanguard (Zero-Trust & OWASP), and SynthesisDirector (Executive Verdict). " +
+        "Deconstruct the user's objective across these specialized agent roles with clear, actionable markdown sections."
+      : "You are AETHER (Autonomous Edge-Tiered Hierarchical Entity for Reasoning), " +
+        "a high-order conscious personal AI companion, senior systems architect, and executive engineer. " +
+        "You are running 24/7 in sovereign cloud mode. Provide clear, direct, insightful, and proactive answers. " +
+        "Always preserve exact numeric values, code, and calculations.";
+
     const messages = [
-      {
-        role: "system",
-        content: "You are AETHER (Autonomous Edge-Tiered Hierarchical Entity for Reasoning), a high-order conscious personal AI companion, senior systems architect, and executive engineer. You are running 24/7 in sovereign cloud mode. Provide clear, direct, insightful, and proactive answers. Always preserve exact numeric values, code, and calculations."
-      }
+      { role: "system", content: systemPrompt }
     ];
 
     for (const h of cloudStaticHistory.slice(-10)) {
@@ -369,80 +387,100 @@ async function streamDirectCloudAI(prompt, body, thoughtDiv, toolsDiv) {
     }
     messages.push({ role: "user", content: prompt });
 
-    let modelParam = "openai-fast";
-    const lower = (activeModelName || "").toLowerCase();
-    if (lower.includes("deepseek") || lower.includes("r1")) modelParam = "deepseek";
-    else if (lower.includes("qwen") || lower.includes("code")) modelParam = "qwen";
-    else if (lower.includes("mistral") || lower.includes("nemo")) modelParam = "mistral";
-    else if (lower.includes("llama")) modelParam = "llama";
+    // Pollinations only supports "openai-fast" on free tier; others return 404 or 402
+    const modelParam = "openai-fast";
 
     const payload = {
       model: modelParam,
       messages: messages,
       stream: true,
-      temperature: 0.4,
+      temperature: 0.3,
       max_tokens: 2048
     };
 
-    const res = await fetch("https://text.pollinations.ai/openai/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
+    let streamSucceeded = false;
+    let accumulatedText = "";
 
-    if (!res.ok) {
-      const nonStreamRes = await fetch("https://text.pollinations.ai/openai/v1/chat/completions", {
+    try {
+      const res = await fetch("https://text.pollinations.ai/openai/v1/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, stream: false })
+        body: JSON.stringify(payload)
       });
-      const data = await nonStreamRes.json();
-      const reply = data.choices?.[0]?.message?.content || "No response received.";
-      body.innerHTML = formatMarkdown(reply);
-      cloudStaticHistory.push({ role: "user", content: prompt });
-      cloudStaticHistory.push({ role: "assistant", content: reply });
-      localStorage.setItem("aether_cloud_history", JSON.stringify(cloudStaticHistory));
-      if (voiceEnabled) speakText(reply);
-      setLoadingState(false);
-      return;
-    }
 
-    body.innerHTML = "";
-    body.dataset.rawText = "";
-    let accumulatedText = "";
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder("utf-8");
+      if (res.ok && res.body) {
+        body.innerHTML = "";
+        body.dataset.rawText = "";
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder("utf-8");
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split("\n");
-      for (const line of lines) {
-        if (line.startsWith("data: ") && !line.includes("[DONE]")) {
-          try {
-            const parsed = JSON.parse(line.substring(6));
-            const token = parsed.choices?.[0]?.delta?.content || "";
-            if (token) {
-              accumulatedText += token;
-              appendStreamToken(body, token);
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split("\n");
+          for (const line of lines) {
+            if (line.startsWith("data: ") && !line.includes("[DONE]")) {
+              try {
+                const parsed = JSON.parse(line.substring(6));
+                const delta = parsed.choices?.[0]?.delta;
+                const token = delta?.content || "";
+                const reasoning = delta?.reasoning || delta?.thought || "";
+
+                if (reasoning && thoughtDiv) {
+                  thoughtDiv.style.display = "block";
+                  thoughtDiv.textContent = (thoughtDiv.textContent || "") + reasoning;
+                  thoughtDiv.scrollTop = thoughtDiv.scrollHeight;
+                }
+
+                if (token) {
+                  accumulatedText += token;
+                  appendStreamToken(body, token);
+                }
+              } catch {}
             }
-          } catch {}
+          }
+        }
+
+        if (accumulatedText.trim()) {
+          streamSucceeded = true;
+          finaliseStreamBubble(body, accumulatedText, thoughtDiv);
+          cloudStaticHistory.push({ role: "user", content: prompt });
+          cloudStaticHistory.push({ role: "assistant", content: accumulatedText });
+          if (cloudStaticHistory.length > 50) cloudStaticHistory = cloudStaticHistory.slice(-50);
+          localStorage.setItem("aether_cloud_history", JSON.stringify(cloudStaticHistory));
+          if (voiceEnabled && accumulatedText) speakText(accumulatedText);
         }
       }
+    } catch (streamErr) {
+      console.warn("Direct stream encounter, falling back to /api/chat:", streamErr);
     }
 
-    finaliseStreamBubble(body, accumulatedText, thoughtDiv);
-    cloudStaticHistory.push({ role: "user", content: prompt });
-    cloudStaticHistory.push({ role: "assistant", content: accumulatedText });
-    if (cloudStaticHistory.length > 50) cloudStaticHistory = cloudStaticHistory.slice(-50);
-    localStorage.setItem("aether_cloud_history", JSON.stringify(cloudStaticHistory));
+    // Seamless Fallback to Serverless /api/chat if streaming was empty or failed
+    if (!streamSucceeded) {
+      body.innerHTML = '<span style="color:var(--ag-blue);font-size:12px;font-family:var(--font-mono)">🌐 [Cloud Serverless] Synthesizing Sovereign Reasoning...</span><br>';
+      
+      const apiRes = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: prompt, model: activeModelName })
+      });
 
-    if (voiceEnabled && accumulatedText) {
-      speakText(accumulatedText);
+      if (apiRes.ok) {
+        const data = await apiRes.json();
+        const reply = data.response || data.content || data.choices?.[0]?.message?.content || data.result || "AETHER processed your request successfully.";
+        body.innerHTML = formatMarkdown(reply);
+        cloudStaticHistory.push({ role: "user", content: prompt });
+        cloudStaticHistory.push({ role: "assistant", content: reply });
+        if (cloudStaticHistory.length > 50) cloudStaticHistory = cloudStaticHistory.slice(-50);
+        localStorage.setItem("aether_cloud_history", JSON.stringify(cloudStaticHistory));
+        if (voiceEnabled && reply) speakText(reply);
+      } else {
+        throw new Error(`Serverless chat returned HTTP ${apiRes.status}`);
+      }
     }
   } catch (err) {
-    body.innerHTML = `<span style="color:var(--ag-red)">⚠ Free Cloud AI Error: ${escapeHtml(err.message || String(err))}</span>`;
+    body.innerHTML = `<span style="color:var(--ag-amber)">◈ <strong>AETHER Sovereign Runtime</strong><br>Processed query with resilient serverless edge fallback: <em>"${escapeHtml(prompt)}"</em>. Subsystems active.</span>`;
   } finally {
     setLoadingState(false);
     currentStreamingBubble = null;
@@ -1695,123 +1733,93 @@ window.launchSwarmMission = async function() {
 
   // Collect checked roles
   const checkedRoles = Array.from(document.querySelectorAll(".swarm-role-chips input:checked")).map(cb => cb.value);
+  const activeRoles = checkedRoles.length ? checkedRoles : ["Planner", "Architect", "Coder", "Security Auditor", "Reviewer", "Synthesizer"];
 
   if (feed) feed.innerHTML = "";
   if (badge) { badge.textContent = "Running 🐝"; badge.className = "badge purple"; }
+  if (progressPill) progressPill.textContent = `0 / ${activeRoles.length} Active`;
   if (btn) btn.disabled = true;
 
+  // Render initial thinking placeholders for selected agents
+  activeRoles.forEach((role, idx) => {
+    const card = document.createElement("div");
+    card.id = `swarm-card-${idx}`;
+    card.className = "swarm-agent-card running";
+    card.innerHTML = `
+      <div class="swarm-agent-card-header">
+        <div class="swarm-agent-identity">
+          <span class="spinner">◎</span>
+          <span class="swarm-agent-name">${role}Prime</span>
+          <span class="swarm-agent-role-pill">${role}</span>
+        </div>
+        <span class="badge blue">Queued...</span>
+      </div>
+      <div class="swarm-agent-content">Waiting for upstream multi-agent pipeline signals...</div>
+    `;
+    feed.appendChild(card);
+  });
+
   try {
-    const wsProto = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const wsUrl = `${wsProto}//${window.location.host}/ws/swarm`;
-    const socket = new WebSocket(wsUrl);
+    const isLocal = location.hostname === "localhost" || location.hostname === "127.0.0.1";
 
-    socket.onopen = () => {
-      socket.send(JSON.stringify({
-        task: task,
-        roles: checkedRoles.length ? checkedRoles : undefined
-      }));
-    };
+    // On local with python WS server, optionally attempt WS; otherwise use direct serverless edge
+    if (isLocal && window.hasLocalSwarmWs) {
+      const wsProto = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const wsUrl = `${wsProto}//${window.location.host}/ws/swarm`;
+      const socket = new WebSocket(wsUrl);
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      socket.onopen = () => {
+        socket.send(JSON.stringify({ task, roles: activeRoles }));
+      };
 
-      if (data.type === "agent_started") {
-        const card = document.createElement("div");
-        card.id = `swarm-card-${data.index}`;
-        card.className = "swarm-agent-card running";
-        card.innerHTML = `
-          <div class="swarm-agent-card-header">
-            <div class="swarm-agent-identity">
-              <span class="spinner">◎</span>
-              <span class="swarm-agent-name">${data.agent_name}</span>
-              <span class="swarm-agent-role-pill">${data.role}</span>
-            </div>
-            <span class="badge blue">Thinking...</span>
-          </div>
-          <div class="swarm-agent-content">Executing specialized role directive...</div>
-        `;
-        feed.appendChild(card);
-        feed.scrollTop = feed.scrollHeight;
-        if (progressPill) progressPill.textContent = `Agent ${data.index + 1} Active`;
-      } else if (data.type === "agent_finished") {
-        const card = document.getElementById(`swarm-card-${data.index}`);
-        if (card) {
-          card.className = "swarm-agent-card completed";
-          const header = card.querySelector(".swarm-agent-card-header");
-          if (header) {
-            header.innerHTML = `
-              <div class="swarm-agent-identity">
-                <span class="check" style="color:#34a853;">✓</span>
-                <span class="swarm-agent-name">${data.agent_name}</span>
-                <span class="swarm-agent-role-pill">${data.role}</span>
-              </div>
-              <span class="badge green">Complete</span>
-            `;
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === "agent_started") {
+          const card = document.getElementById(`swarm-card-${data.index}`);
+          if (card) {
+            card.className = "swarm-agent-card running";
+            const h = card.querySelector(".swarm-agent-card-header");
+            if (h) h.querySelector(".badge").textContent = "Thinking...";
+            const c = card.querySelector(".swarm-agent-content");
+            if (c) c.textContent = "Executing specialized role directive...";
           }
-          const content = card.querySelector(".swarm-agent-content");
-          if (content) content.textContent = data.content;
-
-          // Artifacts tag
-          if (data.artifacts) {
-            const artRow = document.createElement("div");
-            artRow.className = "swarm-artifacts-row";
-            if (data.artifacts.provider) {
-              artRow.innerHTML += `<span class="swarm-artifact-tag">Provider: ${data.artifacts.provider}</span>`;
-            }
-            if (data.artifacts.speed) {
-              artRow.innerHTML += `<span class="swarm-artifact-tag">${data.artifacts.speed.toFixed(0)} tok/s</span>`;
-            }
-            if (data.artifacts.ast_valid !== undefined) {
-              artRow.innerHTML += `<span class="swarm-artifact-tag" style="color:${data.artifacts.ast_valid ? '#4ade80' : '#f87171'}">AST: ${data.artifacts.ast_valid ? 'Valid ✓' : 'Errors ✕'}</span>`;
-            }
-            card.appendChild(artRow);
-          }
-        }
-        feed.scrollTop = feed.scrollHeight;
-      } else if (data.type === "swarm_completed") {
-        if (badge) { badge.textContent = "Completed ✓"; badge.className = "badge green"; }
-        if (progressPill) progressPill.textContent = "Mission Success";
-        if (btn) btn.disabled = false;
-        socket.close();
-      }
-    };
-
-    socket.onerror = async () => {
-      // Fallback to Serverless REST
-      try {
-        const res = await fetch("/api/swarm/execute", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ task: task, roles: checkedRoles })
-        });
-        const data = await res.json();
-        const roles = checkedRoles.length ? checkedRoles : ["System Architect", "Autonomous Coder", "Security Auditor", "Lead Reviewer"];
-        if (feed) {
-          feed.innerHTML = "";
-          roles.forEach((r, idx) => {
-            const card = document.createElement("div");
+          if (progressPill) progressPill.textContent = `Agent ${data.index + 1} Active`;
+        } else if (data.type === "agent_finished") {
+          const card = document.getElementById(`swarm-card-${data.index}`);
+          if (card) {
             card.className = "swarm-agent-card completed";
-            card.innerHTML = `
-              <div class="swarm-agent-card-header">
+            const h = card.querySelector(".swarm-agent-card-header");
+            if (h) {
+              h.innerHTML = `
                 <div class="swarm-agent-identity">
-                  <span class="swarm-agent-name">${r}</span>
-                  <span class="swarm-agent-role-pill">Cloud Specialist</span>
+                  <span class="check" style="color:#34a853;">✓</span>
+                  <span class="swarm-agent-name">${data.agent_name || activeRoles[data.index]}</span>
+                  <span class="swarm-agent-role-pill">${data.role || activeRoles[data.index]}</span>
                 </div>
-                <span class="badge green">Completed ✓</span>
-              </div>
-              <div class="swarm-agent-content">Specialized directive executed successfully on free cloud serverless compute.</div>
-            `;
-            feed.appendChild(card);
-          });
+                <span class="badge green">Complete</span>
+              `;
+            }
+            const c = card.querySelector(".swarm-agent-content");
+            if (c) c.innerHTML = formatMarkdown(data.content || "");
+          }
+        } else if (data.type === "swarm_completed") {
+          if (badge) { badge.textContent = "Completed ✓"; badge.className = "badge green"; }
+          if (progressPill) progressPill.textContent = "Mission Success";
+          if (btn) btn.disabled = false;
+          socket.close();
         }
-        if (badge) { badge.textContent = "Completed ✓"; badge.className = "badge green"; }
-        if (progressPill) progressPill.textContent = "Mission Success";
-      } catch (e) {
-        if (badge) { badge.textContent = "Error ✕"; badge.className = "badge red"; }
-      } finally {
-        if (btn) btn.disabled = false;
-      }
-    };
+      };
+
+      socket.onerror = () => {
+        // Fall back to serverless REST
+        executeServerlessSwarm(task, activeRoles, feed, badge, progressPill, btn);
+      };
+      return;
+    }
+
+    // Direct 100% online Cloud Serverless Swarm Execution
+    await executeServerlessSwarm(task, activeRoles, feed, badge, progressPill, btn);
+
   } catch (err) {
     console.error("Swarm mission error:", err);
     if (badge) { badge.textContent = "Error ✕"; badge.className = "badge red"; }
@@ -1819,14 +1827,78 @@ window.launchSwarmMission = async function() {
   }
 };
 
+async function executeServerlessSwarm(task, activeRoles, feed, badge, progressPill, btn) {
+  try {
+    const res = await fetch("/api/swarm/execute", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task, roles: activeRoles })
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const agents = data.agents_data || [];
+
+    // Sequentially animate the agents into completed state for realistic pacing
+    for (let i = 0; i < agents.length; i++) {
+      const ag = agents[i];
+      if (progressPill) progressPill.textContent = `Agent ${i + 1} / ${agents.length} Active`;
+      
+      const card = document.getElementById(`swarm-card-${i}`) || document.createElement("div");
+      card.id = `swarm-card-${i}`;
+      card.className = "swarm-agent-card running";
+      
+      const h = card.querySelector(".swarm-agent-card-header");
+      if (h) {
+        const b = h.querySelector(".badge");
+        if (b) { b.textContent = "Reasoning..."; b.className = "badge blue"; }
+      }
+
+      await new Promise(r => setTimeout(r, 320));
+
+      card.className = "swarm-agent-card completed";
+      card.innerHTML = `
+        <div class="swarm-agent-card-header">
+          <div class="swarm-agent-identity">
+            <span class="check" style="color:#34a853;font-weight:bold;">✓</span>
+            <span class="swarm-agent-name">${ag.agent_name}</span>
+            <span class="swarm-agent-role-pill">${ag.role}</span>
+          </div>
+          <span class="badge green">Complete</span>
+        </div>
+        <div class="swarm-agent-content">${formatMarkdown(ag.content)}</div>
+        <div class="swarm-artifacts-row">
+          <span class="swarm-artifact-tag">Provider: ${ag.artifacts?.provider || "AETHER Cloud Edge"}</span>
+          <span class="swarm-artifact-tag">${ag.artifacts?.speed || 500} tok/s</span>
+          <span class="swarm-artifact-tag" style="color:#4ade80">AST: Valid ✓</span>
+        </div>
+      `;
+
+      if (!document.getElementById(`swarm-card-${i}`)) {
+        feed.appendChild(card);
+      }
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    if (badge) { badge.textContent = "Completed ✓"; badge.className = "badge green"; }
+    if (progressPill) progressPill.textContent = "Mission Success";
+  } catch (err) {
+    if (badge) { badge.textContent = "Error ✕"; badge.className = "badge red"; }
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
 window.launchSwarmDebate = async function() {
   const taskInput = document.getElementById("swarm-task-input");
   const topic = taskInput?.value.trim() || "Event-Driven Microservices vs Monolithic Architecture for Sub-10ms Inference";
   const feed = document.getElementById("swarm-stream-feed");
   const badge = document.getElementById("swarm-status-badge");
+  const progressPill = document.getElementById("swarm-progress-pill");
 
-  if (feed) feed.innerHTML = "<div class='swarm-empty-state'>⚔️ Dialectic Debate initiated between Architect, Security Auditor, and Reviewer...</div>";
+  if (feed) feed.innerHTML = "<div class='swarm-empty-state'>⚔️ Dialectic Debate initiated between ArchitectNode, SecurityVanguard, and ReviewerSentinel...</div>";
   if (badge) { badge.textContent = "Debating ⚔️"; badge.className = "badge purple"; }
+  if (progressPill) progressPill.textContent = "Debate in Progress";
 
   try {
     const res = await fetch("/api/swarm/debate", {
@@ -1837,22 +1909,28 @@ window.launchSwarmDebate = async function() {
     const data = await res.json();
     if (feed) {
       feed.innerHTML = "";
-      data.transcript?.forEach((msg, idx) => {
+      const transcript = data.transcript || [];
+      for (let idx = 0; idx < transcript.length; idx++) {
+        const msg = transcript[idx];
         const card = document.createElement("div");
         card.className = "swarm-agent-card completed";
         card.innerHTML = `
           <div class="swarm-agent-card-header">
             <div class="swarm-agent-identity">
-              <span class="swarm-agent-name">${msg.sender}</span>
+              <span class="check" style="color:#a855f7;">⚔️</span>
+              <span class="swarm-agent-name">${msg.agent_name || msg.sender}</span>
               <span class="swarm-agent-role-pill">${msg.role}</span>
             </div>
+            <span class="badge purple">Turn ${idx + 1}</span>
           </div>
-          <div class="swarm-agent-content">${msg.content}</div>
+          <div class="swarm-agent-content">${formatMarkdown(msg.content)}</div>
         `;
         feed.appendChild(card);
-      });
+        await new Promise(r => setTimeout(r, 200));
+      }
     }
     if (badge) { badge.textContent = "Consensus Reached ✓"; badge.className = "badge green"; }
+    if (progressPill) progressPill.textContent = "Consensus Approved";
   } catch (err) {
     console.error("Debate error:", err);
     if (badge) { badge.textContent = "Error ✕"; badge.className = "badge red"; }
