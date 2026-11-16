@@ -1,0 +1,19 @@
+name: AETHER 24/7 Cloud Keepalive Ping
+
+on:
+  schedule:
+    # Run every 15 minutes
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping AETHER Cloud Assistant
+        env:
+          AETHER_CLOUD_URL: ${{ secrets.AETHER_CLOUD_URL }}
+        run: |
+          URL="${AETHER_CLOUD_URL:-https://aether-sovereign-assistant.onrender.com}"
+          echo "Pinging AETHER Cloud at: $URL"
+          curl -f -s -o /dev/null -w "%{http_code}" "$URL/api/owner/health" || echo "Ping failed or starting up"

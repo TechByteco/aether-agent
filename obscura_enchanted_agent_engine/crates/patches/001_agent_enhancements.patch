@@ -1,0 +1,36 @@
+--- a/crates/obscura-mcp/src/lib.rs
++++ b/crates/obscura-mcp/src/lib.rs
+@@ -343,6 +343,26 @@ fn handle_tools_list(id: Value) -> RpcResponse {
+     let mut tools = json!([
++        {
++            "name": "browser_distilled_snapshot",
++            "description": "Extract token-compressed semantic markdown with deterministic [@ref:ID] tags. Achieves 80-90% token reduction.",
++            "inputSchema": {
++                "type": "object",
++                "properties": {}
++            }
++        },
++        {
++            "name": "browser_diff_snapshot",
++            "description": "Emit ONLY DOM mutations since the last turn to save up to 95% tokens during multi-step flows.",
++            "inputSchema": {
++                "type": "object",
++                "properties": {}
++            }
++        },
++        {
++            "name": "browser_act",
++            "description": "Universal atomic action dispatcher supporting [@ref:ID] tags directly.",
++            "inputSchema": {
++                "type": "object",
++                "properties": {
++                    "action": { "type": "string", "enum": ["click", "type", "select", "press_key"] },
++                    "ref": { "type": "string" },
++                    "value": { "type": "string" }
++                },
++                "required": ["action"]
++            }
++        },
+         {
+             "name": "browser_navigate",
+             "description": "Navigate the page to a URL and wait for DOM load.",

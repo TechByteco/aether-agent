@@ -1,0 +1,29 @@
+[project]
+name = "aether"
+version = "0.8.0"
+description = "AETHER — Autonomous Personal AGI Companion for Snapdragon X (2024–2025 AGI Architecture)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.15.0",
+    "fastapi[standard]>=0.115.0",
+    "httpx>=0.28.1",
+    "ollama>=0.6.2",
+    "pillow>=11.0.0",
+    "psutil>=7.2.2",
+    "pyaudio>=0.2.14",
+    "pydantic>=2.13.5",
+    "pynput>=1.8.2",
+    "pyttsx3>=2.99",
+    "rich>=15.0.0",
+    "sounddevice>=0.5.6",
+    "speechrecognition>=3.17.0",
+    "uvicorn[standard]>=0.34.0",
+]
+
+[project.scripts]
+aether = "aether:main"
+
+[build-system]
+requires = ["uv_build>=0.12.11,<0.13.0"]
+build-backend = "uv_build"

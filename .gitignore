@@ -41,14 +41,17 @@ data/leon_growth/
 data/leon_intelligence/
 data/leon_ventures_live/
 data/logs/
-data/memory/
 data/screenshots/
-data/training/
+data/models/
 data/*.zip
 data/*.db
 data/*.db-shm
 data/*.db-wal
 data/*.sqlite
+data/memory/*.db
+data/memory/*.db-shm
+data/memory/*.db-wal
+data/memory/*.sqlite
 data/improvement_log.jsonl
 data/latest_improvement_report.json
 data/infinite_evolution_state.json
@@ -76,3 +79,5 @@ htmlcov/
 
 # Node
 node_modules/
+
+.github/

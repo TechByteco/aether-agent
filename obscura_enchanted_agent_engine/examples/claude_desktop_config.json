@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "obscura-agent": {
+      "command": "python",
+      "args": ["-m", "obscura_engine.cli", "serve"],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}

@@ -1,0 +1,354 @@
+{
+  "cloudflow-ai": {
+    "slug": "cloudflow-ai",
+    "name": "CloudFlow AI",
+    "niche": "developer_tools",
+    "target_audience_type": "b2b_smb",
+    "value_prop": "Instant AI Infrastructure Drift Detection & Continuous AST Self-Healing",
+    "problem": "DevOps teams spend 15+ hours weekly diagnosing cloud configuration drift and broken pipelines.",
+    "features": [
+      "Autonomous Real-Time Infrastructure Drift Detection & Rollback",
+      "AST Code Syntax Verification & Micro-Patch Synthesis",
+      "Zero-Cloud-Cost Local Static Analysis Engine",
+      "Seamless GitHub Actions, GitLab CI & AWS/GCP Integrations",
+      "Instant Telegram & Discord Alerting Webhooks"
+    ],
+    "initial_monthly_price_inr": 199.0,
+    "initial_annual_price_inr": 1499.0,
+    "current_monthly_price_inr": 199.0,
+    "current_annual_price_inr": 1499.0,
+    "price_revision_history": [
+      {
+        "timestamp": "2026-10-03T17:10:35.924564+00:00",
+        "monthly_price_inr": 199.0,
+        "annual_price_inr": 1499.0,
+        "reason": "Initial Low-Cost Launch Tier (Phase 1 Acquisition)"
+      },
+      {
+        "timestamp": "2026-10-03T17:10:36.042273+00:00",
+        "previous_monthly_price_inr": 199.0,
+        "previous_annual_price_inr": 1499.0,
+        "monthly_price_inr": 240.0,
+        "annual_price_inr": 1800.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:12:36.073721+00:00",
+        "previous_monthly_price_inr": 240.0,
+        "previous_annual_price_inr": 1800.0,
+        "monthly_price_inr": 249.0,
+        "annual_price_inr": 1999.0,
+        "reason": "Enterprise AST Self-Healing Release"
+      },
+      {
+        "timestamp": "2026-10-03T17:12:48.153420+00:00",
+        "previous_monthly_price_inr": 249.0,
+        "previous_annual_price_inr": 1999.0,
+        "monthly_price_inr": 300.0,
+        "annual_price_inr": 2400.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:13:08.505431+00:00",
+        "previous_monthly_price_inr": 300.0,
+        "previous_annual_price_inr": 2400.0,
+        "monthly_price_inr": 360.0,
+        "annual_price_inr": 2900.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:14:14.225608+00:00",
+        "previous_monthly_price_inr": 360.0,
+        "previous_annual_price_inr": 2900.0,
+        "monthly_price_inr": 249.0,
+        "annual_price_inr": 1999.0,
+        "reason": "Enterprise AST Self-Healing Release"
+      },
+      {
+        "timestamp": "2026-10-03T18:56:06.806393+00:00",
+        "previous_monthly_price_inr": 249.0,
+        "previous_annual_price_inr": 1999.0,
+        "monthly_price_inr": 199.0,
+        "annual_price_inr": 1499.0,
+        "reason": "Reset to low-cost launch tier (test pollution fix)"
+      }
+    ],
+    "live_url": "https://cloudflow-ai-saali.vercel.app",
+    "subscribers_count": 0,
+    "total_revenue_inr": 0.0,
+    "status": "live",
+    "created_at": "2026-10-03T17:10:35.924598+00:00"
+  },
+  "leadpulse-pro": {
+    "slug": "leadpulse-pro",
+    "name": "LeadPulse Pro",
+    "niche": "agency_services",
+    "target_audience_type": "b2b_enterprise",
+    "value_prop": "Hyper-Targeted B2B Lead Scraping, Contact Enrichment & AI Cold Outreach",
+    "problem": "Founders and sales teams waste hundreds of hours manually searching leads and writing low-response emails.",
+    "features": [
+      "Automated Multi-Channel Lead Discovery (LinkedIn, GitHub, Web)",
+      "Deep Contact Qualification Scoring & Verified Email Discovery",
+      "Anti-Spam Compliant Personalized Copywriting Engine",
+      "1-Click CSV Export & CRM Direct Webhook Sync",
+      "Automated Multi-Stage Follow-Up Cadence Dispatcher"
+    ],
+    "initial_monthly_price_inr": 299.0,
+    "initial_annual_price_inr": 2499.0,
+    "current_monthly_price_inr": 299.0,
+    "current_annual_price_inr": 2499.0,
+    "price_revision_history": [
+      {
+        "timestamp": "2026-10-03T17:10:35.924608+00:00",
+        "monthly_price_inr": 299.0,
+        "annual_price_inr": 2499.0,
+        "reason": "Initial Low-Cost Launch Tier (Phase 1 Acquisition)"
+      },
+      {
+        "timestamp": "2026-10-03T17:10:43.452068+00:00",
+        "previous_monthly_price_inr": 299.0,
+        "previous_annual_price_inr": 2499.0,
+        "monthly_price_inr": 360.0,
+        "annual_price_inr": 3000.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:12:51.457314+00:00",
+        "previous_monthly_price_inr": 360.0,
+        "previous_annual_price_inr": 3000.0,
+        "monthly_price_inr": 430.0,
+        "annual_price_inr": 3600.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:13:11.884550+00:00",
+        "previous_monthly_price_inr": 430.0,
+        "previous_annual_price_inr": 3600.0,
+        "monthly_price_inr": 520.0,
+        "annual_price_inr": 4300.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T18:56:13.800737+00:00",
+        "previous_monthly_price_inr": 520.0,
+        "previous_annual_price_inr": 4300.0,
+        "monthly_price_inr": 299.0,
+        "annual_price_inr": 2499.0,
+        "reason": "Reset to low-cost launch tier (test pollution fix)"
+      }
+    ],
+    "live_url": "https://leadpulse-pro-saali.vercel.app",
+    "subscribers_count": 0,
+    "total_revenue_inr": 0.0,
+    "status": "live",
+    "created_at": "2026-10-03T17:10:35.924615+00:00"
+  },
+  "apexstudio-ai": {
+    "slug": "apexstudio-ai",
+    "name": "ApexStudio AI",
+    "niche": "agency_services",
+    "target_audience_type": "creator_freelancer",
+    "value_prop": "High-Converting Interactive Animated Websites & Brand Systems in <30 Seconds",
+    "problem": "Hiring agency designers costs \u20b950,000+ and takes weeks to build luxury animated landing pages.",
+    "features": [
+      "Awwwards-Grade Interactive Tailwind CSS & Canvas Animations",
+      "6 Dynamic Design Token Archetypes (Bento, Glass, Luxury, Terminal)",
+      "Embedded Razorpay Instant UPI QR & Card Checkout Modals",
+      "1-Click Instant Vercel & Netlify Cloud Deployment",
+      "Built-in Schema.org JSON-LD Structured SEO Optimization"
+    ],
+    "initial_monthly_price_inr": 499.0,
+    "initial_annual_price_inr": 3999.0,
+    "current_monthly_price_inr": 499.0,
+    "current_annual_price_inr": 3999.0,
+    "price_revision_history": [
+      {
+        "timestamp": "2026-10-03T17:10:35.924620+00:00",
+        "monthly_price_inr": 499.0,
+        "annual_price_inr": 3999.0,
+        "reason": "Initial Low-Cost Launch Tier (Phase 1 Acquisition)"
+      },
+      {
+        "timestamp": "2026-10-03T17:10:52.650972+00:00",
+        "previous_monthly_price_inr": 499.0,
+        "previous_annual_price_inr": 3999.0,
+        "monthly_price_inr": 600.0,
+        "annual_price_inr": 4800.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:12:55.412250+00:00",
+        "previous_monthly_price_inr": 600.0,
+        "previous_annual_price_inr": 4800.0,
+        "monthly_price_inr": 720.0,
+        "annual_price_inr": 5800.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:13:15.282176+00:00",
+        "previous_monthly_price_inr": 720.0,
+        "previous_annual_price_inr": 5800.0,
+        "monthly_price_inr": 860.0,
+        "annual_price_inr": 7000.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T18:56:21.014463+00:00",
+        "previous_monthly_price_inr": 860.0,
+        "previous_annual_price_inr": 7000.0,
+        "monthly_price_inr": 499.0,
+        "annual_price_inr": 3999.0,
+        "reason": "Reset to low-cost launch tier (test pollution fix)"
+      }
+    ],
+    "live_url": "https://apexstudio-ai-saali.vercel.app",
+    "subscribers_count": 0,
+    "total_revenue_inr": 0.0,
+    "status": "live",
+    "created_at": "2026-10-03T17:10:35.924624+00:00"
+  },
+  "cogniguard-cyber": {
+    "slug": "cogniguard-cyber",
+    "name": "CogniGuard Cyber",
+    "niche": "cybersecurity",
+    "target_audience_type": "b2b_smb",
+    "value_prop": "Automated Port Auditing, Secret Leak Detection & Real-Time Threat Reconnaissance",
+    "problem": "Small businesses and indie devs suffer data breaches due to exposed API keys and open ports.",
+    "features": [
+      "Continuous Codebase & Repo Secret Leak Scanners",
+      "Local & Remote Open Port Reconnaissance & SSL Inspection",
+      "Automated CVE & Zero-Day Threat Intelligence Feed",
+      "Zero Data Storage \u2014 100% Client-Side Private Auditing",
+      "Detailed Compliance Audit PDF & JSON Export"
+    ],
+    "initial_monthly_price_inr": 149.0,
+    "initial_annual_price_inr": 1199.0,
+    "current_monthly_price_inr": 149.0,
+    "current_annual_price_inr": 1199.0,
+    "price_revision_history": [
+      {
+        "timestamp": "2026-10-03T17:10:35.924626+00:00",
+        "monthly_price_inr": 149.0,
+        "annual_price_inr": 1199.0,
+        "reason": "Initial Low-Cost Launch Tier (Phase 1 Acquisition)"
+      },
+      {
+        "timestamp": "2026-10-03T17:10:59.682896+00:00",
+        "previous_monthly_price_inr": 149.0,
+        "previous_annual_price_inr": 1199.0,
+        "monthly_price_inr": 180.0,
+        "annual_price_inr": 1400.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:12:58.679308+00:00",
+        "previous_monthly_price_inr": 180.0,
+        "previous_annual_price_inr": 1400.0,
+        "monthly_price_inr": 220.0,
+        "annual_price_inr": 1700.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:13:18.908791+00:00",
+        "previous_monthly_price_inr": 220.0,
+        "previous_annual_price_inr": 1700.0,
+        "monthly_price_inr": 260.0,
+        "annual_price_inr": 2000.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T18:56:28.444770+00:00",
+        "previous_monthly_price_inr": 260.0,
+        "previous_annual_price_inr": 2000.0,
+        "monthly_price_inr": 149.0,
+        "annual_price_inr": 1199.0,
+        "reason": "Reset to low-cost launch tier (test pollution fix)"
+      }
+    ],
+    "live_url": "https://cogniguard-cyber-saali.vercel.app",
+    "subscribers_count": 0,
+    "total_revenue_inr": 0.0,
+    "status": "live",
+    "created_at": "2026-10-03T17:10:35.924630+00:00"
+  },
+  "aether-sovereign-os": {
+    "slug": "aether-sovereign-os",
+    "name": "Aether Sovereign OS",
+    "niche": "productivity_saas",
+    "target_audience_type": "individual_prosumer",
+    "value_prop": "24/7 Sovereign Personal AI Assistant with Snapdragon NPU Acceleration & Dual GPU Cloud Evolution",
+    "problem": "Modern AI assistants are fragmented, cloud-dependent, leak private data, and lack persistent long-term memory.",
+    "features": [
+      "100% Private Local Inference via Snapdragon Hexagon NPU & DirectML",
+      "24/7 Dual Tesla T4 Cloud RLAIF Self-Play Evolutionary Training",
+      "Hybrid Dense RAG & Semantic Triples Knowledge Graph",
+      "Native Computer Vision & Screen-Grounding Actuation",
+      "Zero-CPU Hardware Wake-Word Engine & Voice Interaction"
+    ],
+    "initial_monthly_price_inr": 99.0,
+    "initial_annual_price_inr": 799.0,
+    "current_monthly_price_inr": 99.0,
+    "current_annual_price_inr": 799.0,
+    "price_revision_history": [
+      {
+        "timestamp": "2026-10-03T17:10:35.924632+00:00",
+        "monthly_price_inr": 99.0,
+        "annual_price_inr": 799.0,
+        "reason": "Initial Low-Cost Launch Tier (Phase 1 Acquisition)"
+      },
+      {
+        "timestamp": "2026-10-03T17:11:06.796263+00:00",
+        "previous_monthly_price_inr": 99.0,
+        "previous_annual_price_inr": 799.0,
+        "monthly_price_inr": 120.0,
+        "annual_price_inr": 1000.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:12:29.084169+00:00",
+        "previous_monthly_price_inr": 120.0,
+        "previous_annual_price_inr": 1000.0,
+        "monthly_price_inr": 199.0,
+        "annual_price_inr": 1599.0,
+        "reason": "Phase 2 Feature Expansion Upgrade"
+      },
+      {
+        "timestamp": "2026-10-03T17:13:02.047374+00:00",
+        "previous_monthly_price_inr": 199.0,
+        "previous_annual_price_inr": 1599.0,
+        "monthly_price_inr": 240.0,
+        "annual_price_inr": 1900.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:13:22.152592+00:00",
+        "previous_monthly_price_inr": 240.0,
+        "previous_annual_price_inr": 1900.0,
+        "monthly_price_inr": 290.0,
+        "annual_price_inr": 2300.0,
+        "reason": "Systematic +20% Portfolio Value & Demand Revision"
+      },
+      {
+        "timestamp": "2026-10-03T17:14:11.226899+00:00",
+        "previous_monthly_price_inr": 290.0,
+        "previous_annual_price_inr": 2300.0,
+        "monthly_price_inr": 199.0,
+        "annual_price_inr": 1599.0,
+        "reason": "Phase 2 Feature Expansion Upgrade"
+      },
+      {
+        "timestamp": "2026-10-03T18:56:35.277546+00:00",
+        "previous_monthly_price_inr": 199.0,
+        "previous_annual_price_inr": 1599.0,
+        "monthly_price_inr": 99.0,
+        "annual_price_inr": 799.0,
+        "reason": "Reset to low-cost launch tier (test pollution fix)"
+      }
+    ],
+    "live_url": "https://aether-sovereign-os-saali.vercel.app",
+    "subscribers_count": 0,
+    "total_revenue_inr": 0.0,
+    "status": "live",
+    "created_at": "2026-10-03T17:10:35.924635+00:00"
+  }
+}

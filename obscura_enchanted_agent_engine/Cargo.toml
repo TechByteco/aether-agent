@@ -1,0 +1,12 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/obscura-distiller",
+]
+
+[workspace.package]
+version = "1.0.0"
+edition = "2021"
+license = "Apache-2.0"
+authors = ["TechByte AI Team <engineering@techbyte.co>"]
+repository = "https://github.com/TechByteco/obscura_enchanted_agent_engine"

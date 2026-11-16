@@ -1,0 +1,5 @@
+{
+  "name": "obscura-enchanted-agent-engine",
+  "command": "python",
+  "args": ["-m", "obscura_engine.cli", "serve"]
+}

@@ -1,0 +1,18 @@
+services:
+  obscura-agent:
+    build: .
+    image: techbyteco/obscura-enchanted-agent-engine:latest
+    container_name: obscura_agent_engine
+    restart: unless-stopped
+    ports:
+      - "9222:9222"
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MAX_ACTIVE_TABS=15
+      - MEMORY_MB_PER_TAB=35.0
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"

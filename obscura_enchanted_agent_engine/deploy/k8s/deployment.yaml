@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: obscura-engine-deployment
+  labels:
+    app: obscura-engine
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: obscura-engine
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: obscura-engine
+    spec:
+      containers:
+        - name: obscura-engine
+          image: techbyteco/obscura-enchanted-agent-engine:latest
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "obscura_engine.cli", "serve-api", "--host", "0.0.0.0", "--port", "8000"]
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: obscura-engine-config
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1024Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10

@@ -1,0 +1,122 @@
+{
+  "protocol_version": "1.0.0",
+  "last_updated": "2026-09-18T21:35:00+05:30",
+  "heuristics": [
+    {
+      "id": "H001",
+      "category": "Acoustic_Isolation",
+      "insight": "Audio feedback loops on laptop hardware occur if wake chimes overlap with microphone stream opening. Always enforce >= 150ms dissipation delay before opening speech recognition sources.",
+      "severity": "CRITICAL",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H002",
+      "category": "Platform_Architecture",
+      "insight": "Windows on ARM64 requires explicit emulation overrides for legacy x86 bundled binaries (e.g. flac-win32.exe) when upstream packages omit arm64 architecture strings.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H003",
+      "category": "Cognitive_Steering",
+      "insight": "Sub-8B parameter models require clean, direct conversational prompts without JSON or tool meta-dialogue in system prompts to prevent hallucinated code leaks.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H004",
+      "category": "Resource_Budgeting",
+      "insight": "Snapdragon X 16GB platforms operate with keep_alive: 10m and num_ctx: 8192, delivering sub-2s cached response latency while preserving unified memory efficiency.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H005",
+      "category": "Sensory_Perception",
+      "insight": "Screen grabbing via PIL ImageGrab fails on Windows 11 ARM64 due to display driver handle virtualisation; PowerShell .NET Graphics CopyFromScreen provides stable, crash-free frame acquisition.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H006",
+      "category": "Edge_Vision_Optimization",
+      "insight": "Feeding uncompressed 4K screen bitmaps directly to edge multimodal models creates severe latency and memory spikes; Lanczos downsampling to 1280px cuts payload by 90% while maintaining full UI element and font fidelity.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H007",
+      "category": "Dynamic_Code_Agency",
+      "insight": "Sandboxed Python subprocess execution with a 60s timeout enables the companion to solve ad-hoc mathematical, algorithmic, and data transformations without arbitrary premature cutoff.",
+      "severity": "MEDIUM",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H008",
+      "category": "Multimodal_Model_Orchestration",
+      "insight": "moondream:latest provides sub-2s visual inference on edge Snapdragon hardware with a 1.7GB footprint. First-time model hydration requires ~2.8s cold-load duration before stabilizing to instant cached inference.",
+      "severity": "MEDIUM",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H009",
+      "category": "Autonomous_Daemon_Architecture",
+      "insight": "Background daemons for edge AGI companions must decouple notification dispatch from blocking speech synthesis using non-blocking daemon threads to maintain instantaneous CLI responsiveness.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H010",
+      "category": "Interface_Architecture",
+      "insight": "Browser-native Web Speech API (webkitSpeechRecognition + speechSynthesis) delivers zero-lag, driver-independent voice interaction on Windows ARM64, eliminating terminal audio driver edge-cases and acoustic feedback loops.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H011",
+      "category": "Memory_Retrieval",
+      "insight": "SQLite FTS5 implicit AND semantics fail on multi-word user prompts; tokenized OR queries with stop-word stripping preserve robust episodic recall across conversational and complex instructions.",
+      "severity": "CRITICAL",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H012",
+      "category": "Voice_Synthesis",
+      "insight": "Speech synthesis text sanitation must preserve numeric digits, restricting regex filtering strictly to bracketed citation indices like [1] or (1).",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H013",
+      "category": "Voice_Interface",
+      "insight": "Web Speech API requires continuous mode with a 2.0s silence debounce timer to prevent premature cutoff of multi-clause spoken commands.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H014",
+      "category": "Model_Conversation_Format",
+      "insight": "Llama 3.2 requires strictly alternating user/assistant turns in the prompt history; consecutive user turns trigger false refusal fallbacks (e.g. 'I can't fulfill this request').",
+      "severity": "CRITICAL",
+      "status": "ENFORCED"
+    },
+    {
+      "id": "H015",
+      "category": "System_Agency",
+      "insight": "Edge personal companions require dual-path OS agency: sandboxed Python subprocess execution for computation and direct PowerShell/CMD execution for OS operations.",
+      "severity": "HIGH",
+      "status": "ENFORCED"
+    }
+  ],
+  "optimal_role_templates": [
+    "Worker_SysArch",
+    "Worker_SensoryPerception",
+    "Worker_KnowledgeEngine",
+    "Worker_CodeSpecialist",
+    "Worker_VisionIntelligence",
+    "Worker_AGIEvolutionist",
+    "Worker_FullStackArchitect",
+    "Worker_UIDesigner",
+    "Worker_VoiceInteractionEngineer"
+  ]
+}

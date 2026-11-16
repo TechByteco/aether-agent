@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: obscura-engine-config
+  labels:
+    app: obscura-engine
+data:
+  OBSCURA_LOG_LEVEL: "INFO"
+  OBSCURA_LOG_FORMAT: "json"
+  MAX_ACTIVE_TABS: "20"
+  MEMORY_MB_PER_TAB: "35.0"
+  CACHE_ENABLED: "true"
+  RATE_LIMIT_ENABLED: "true"

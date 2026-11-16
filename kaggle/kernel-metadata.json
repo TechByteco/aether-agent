@@ -1,0 +1,14 @@
+{
+  "id": "saalimin/aether-cloud-247-sovereign-runtime",
+  "title": "AETHER 24-7 Sovereign Cloud Autonomous Agent",
+  "code_file": "aether_cloud_247_sovereign_runtime.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
