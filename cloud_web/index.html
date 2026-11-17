@@ -28,9 +28,9 @@
           <div class="ag-symbol-wrap">
             <span class="ag-symbol">◈</span>
           </div>
-          <div class="ag-brand-text" style="display:flex; flex-direction:column; line-height:1.1;">
-            <span class="ag-title" style="font-size: 17px; font-weight: 700; letter-spacing: 0.5px; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AETHER</span>
-            <span class="ag-subtitle" style="font-size: 9px; color: rgba(255,255,255,0.55); font-weight: 500; text-transform: uppercase; letter-spacing: 1px;">Sovereign OS</span>
+          <div class="ag-brand-text">
+            <span class="ag-title">AETHER</span>
+            <span class="ag-subtitle">Sovereign OS</span>
           </div>
         </div>
         <div class="ag-workspace-crumb">
@@ -820,11 +820,11 @@
             </div>
 
             <!-- Obscura Web Intelligence Navigator Box -->
-            <div style="margin-top: 12px; padding: 12px; background: rgba(0, 242, 254, 0.03); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 8px;">
+            <div class="aux-module-card">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <div style="font-size: 11px; font-weight: 700; color: #00f2fe; display: flex; align-items: center; gap: 6px;">
+                <div style="font-size: 11px; font-weight: 700; color: var(--ag-blue); display: flex; align-items: center; gap: 6px;">
                   <span>🌐 Obscura Web Intelligence</span>
-                  <span class="badge" style="background: rgba(0,242,254,0.15); color: #00f2fe; font-size: 9px; padding: 2px 6px;">~30MB V8 Headless</span>
+                  <span class="badge blue" style="font-size: 9px; padding: 2px 6px;">~30MB V8 Headless</span>
                 </div>
                 <span class="badge green" id="obscura-badge" style="font-size: 9px;">Active</span>
               </div>
@@ -832,11 +832,11 @@
                 <input type="text" id="obscura-url-input" class="ag-input-sm" placeholder="https://news.ycombinator.com" value="https://news.ycombinator.com" style="flex: 1;" />
                 <button class="ag-btn-xs primary" onclick="runObscuraDistillUI()" id="obscura-btn">⚡ Distill</button>
               </div>
-              <div id="obscura-metrics-bar" style="display: none; margin-top: 8px; font-size: 10px; color: #94a3b8; justify-content: space-between;">
-                <span id="obscura-token-savings" style="color: #10b981; font-weight: 600;"></span>
-                <span id="obscura-ram-usage" style="color: #38bdf8;">RAM: ~32.5 MB</span>
+              <div id="obscura-metrics-bar" style="display: none; margin-top: 8px; font-size: 10px; color: var(--text-tertiary); justify-content: space-between;">
+                <span id="obscura-token-savings" style="color: #16a34a; font-weight: 600;"></span>
+                <span id="obscura-ram-usage" style="color: var(--ag-blue);">RAM: ~32.5 MB</span>
               </div>
-              <div id="obscura-result-box" style="display: none; margin-top: 8px; max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 8px; font-size: 11px; font-family: monospace; white-space: pre-wrap; color: #cbd5e1;"></div>
+              <div id="obscura-result-box" class="aux-output-card" style="display: none; margin-top: 8px; max-height: 200px; overflow-y: auto; font-size: 11px; font-family: var(--font-mono); white-space: pre-wrap;"></div>
             </div>
 
             <!-- Specialists Card Stream -->
@@ -862,8 +862,8 @@
             </div>
 
             <!-- Compose Form Box (Collapsible) -->
-            <div id="email-compose-box" style="display: none; margin-top: 12px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
-              <div style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: #4facfe;">✉️ Compose Outbound Email</div>
+            <div id="email-compose-box" class="aux-module-card" style="display: none; margin-top: 12px;">
+              <div style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: var(--ag-blue);">✉️ Compose Outbound Email</div>
               <input type="text" id="email-to-input" class="ag-input-sm" placeholder="To: client@company.com" style="margin-bottom: 6px;" />
               <input type="text" id="email-subj-input" class="ag-input-sm" placeholder="Subject: Executive Briefing" style="margin-bottom: 6px;" />
               <textarea id="email-body-input" class="ag-goals-textarea" placeholder="Compose your email message..." rows="3"></textarea>
@@ -877,7 +877,7 @@
             <div class="panel-section-title mt-16">
               <span>📊 Executive Inbox Briefing</span>
             </div>
-            <div id="email-summary-container" style="background: rgba(0, 242, 254, 0.04); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 8px; padding: 12px; font-size: 12px; line-height: 1.5; color: #e2e8f0;">
+            <div id="email-summary-container" class="aux-output-card">
               Click '⚡ AI Summarize Inbox' to synthesize your latest emails and extract action items...
             </div>
 
@@ -899,8 +899,8 @@
             </div>
 
             <!-- Module 1: Flight & Travel -->
-            <div style="margin-top: 10px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
-              <div style="font-size: 12px; font-weight: 600; color: #00f2fe; margin-bottom: 6px;">✈️ Flight & Travel Concierge</div>
+            <div class="aux-module-card">
+              <div style="font-size: 12px; font-weight: 600; color: var(--ag-blue); margin-bottom: 6px;">✈️ Flight & Travel Concierge</div>
               <div style="display: flex; gap: 6px; margin-bottom: 6px;">
                 <input type="text" id="instinct-flight-origin" class="ag-input-sm" placeholder="From: Delhi" style="flex: 1;" />
                 <input type="text" id="instinct-flight-dest" class="ag-input-sm" placeholder="To: Mumbai" style="flex: 1;" />
@@ -910,8 +910,8 @@
             </div>
 
             <!-- Module 2: Bill Negotiation -->
-            <div style="margin-top: 10px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
-              <div style="font-size: 12px; font-weight: 600; color: #a855f7; margin-bottom: 6px;">📉 Bill & Telecom Negotiator</div>
+            <div class="aux-module-card">
+              <div style="font-size: 12px; font-weight: 600; color: var(--ag-purple); margin-bottom: 6px;">📉 Bill & Telecom Negotiator</div>
               <div style="display: flex; gap: 6px; margin-bottom: 6px;">
                 <input type="text" id="instinct-bill-provider" class="ag-input-sm" placeholder="Provider: Airtel / Jio" style="flex: 2;" />
                 <input type="number" id="instinct-bill-amount" class="ag-input-sm" placeholder="Amount: 1499" style="flex: 1;" />
@@ -920,8 +920,8 @@
             </div>
 
             <!-- Module 3: Dining & Table Reservation -->
-            <div style="margin-top: 10px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
-              <div style="font-size: 12px; font-weight: 600; color: #22c55e; margin-bottom: 6px;">🍽️ Dining & Table Reservations</div>
+            <div class="aux-module-card">
+              <div style="font-size: 12px; font-weight: 600; color: var(--ag-green); margin-bottom: 6px;">🍽️ Dining & Table Reservations</div>
               <div style="display: flex; gap: 6px; margin-bottom: 6px;">
                 <input type="text" id="instinct-dine-loc" class="ag-input-sm" placeholder="Area: Indiranagar" style="flex: 1;" />
                 <input type="text" id="instinct-dine-cuisine" class="ag-input-sm" placeholder="Cuisine: Italian" style="flex: 1;" />
@@ -933,7 +933,7 @@
             <div class="panel-section-title mt-16">
               <span>📋 Concierge Synthesis Result</span>
             </div>
-            <div id="instinct-output-container" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; font-size: 12px; line-height: 1.5; color: #e2e8f0; min-height: 80px;">
+            <div id="instinct-output-container" class="aux-output-card">
               Select an errand module above to generate itineraries, negotiation leverage scripts, and reservations.
             </div>
           </div>
@@ -946,8 +946,8 @@
             </div>
 
             <!-- 1-Tap Alarm Intent Maker -->
-            <div style="margin-top: 10px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
-              <div style="font-size: 12px; font-weight: 600; color: #38bdf8; margin-bottom: 6px;">⏰ 1-Tap Clock Alarm Generator</div>
+            <div class="aux-module-card" style="margin-top: 10px;">
+              <div style="font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 6px;">⏰ 1-Tap Clock Alarm Generator</div>
               <div style="display: flex; gap: 6px; margin-bottom: 6px;">
                 <input type="text" id="samsung-alarm-time" class="ag-input-sm" placeholder="Time: 07:30 AM or in 20m" style="flex: 1;" />
                 <input type="text" id="samsung-alarm-label" class="ag-input-sm" placeholder="Label: Standup" style="flex: 1;" />
@@ -956,16 +956,16 @@
             </div>
 
             <!-- 1-Tap Calendar Creator -->
-            <div style="margin-top: 10px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
-              <div style="font-size: 12px; font-weight: 600; color: #a855f7; margin-bottom: 6px;">📅 1-Tap Samsung Calendar Link</div>
-              <input type="text" id="samsung-mtg-title" class="ag-input-sm" placeholder="Event: Executive Strategy Session" style="margin-bottom: 6px;" />
+            <div class="aux-module-card" style="margin-top: 10px;">
+              <div style="font-size: 12px; font-weight: 600; color: #7c3aed; margin-bottom: 6px;">📅 1-Tap Samsung Calendar Link</div>
+              <input type="text" id="samsung-mtg-title" class="ag-input-sm" placeholder="Event: Executive Strategy Session" style="margin-bottom: 6px; width: 100%;" />
               <button class="ag-btn-xs secondary" onclick="runSamsungMeetingUI()" style="width: 100%;">Generate 1-Tap Add to Calendar Link</button>
             </div>
 
             <!-- Modes & Routines Webhook Simulator -->
-            <div style="margin-top: 10px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
-              <div style="font-size: 12px; font-weight: 600; color: #22c55e; margin-bottom: 6px;">⚙️ Modes & Routines Webhook Trigger</div>
-              <select id="samsung-routine-select" class="ag-input-sm" style="margin-bottom: 6px; background: #0f172a; color: white;">
+            <div class="aux-module-card" style="margin-top: 10px;">
+              <div style="font-size: 12px; font-weight: 600; color: #16a34a; margin-bottom: 6px;">⚙️ Modes & Routines Webhook Trigger</div>
+              <select id="samsung-routine-select" class="ag-input-sm" style="margin-bottom: 6px; width: 100%;">
                 <option value="wake_up">🌅 Wake Up / Morning Routine (Triggers Briefing)</option>
                 <option value="bedtime">🌙 Bedtime / Sleep Mode (Evening Wind-Down)</option>
                 <option value="driving">🚗 Driving / Commute (Voice-First Audio)</option>
@@ -979,7 +979,7 @@
             <div class="panel-section-title mt-16">
               <span>📱 Mobile Action Card Preview</span>
             </div>
-            <div id="samsung-output-container" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; font-size: 12px; line-height: 1.5; color: #e2e8f0; min-height: 80px;">
+            <div id="samsung-output-container" class="aux-output-card" style="min-height: 80px;">
               Action cards, 1-tap links, and routine logs will appear here.
             </div>
           </div>
@@ -993,22 +993,22 @@
 
             <div class="evo-stats-grid" style="margin-top: 10px;">
               <div class="evo-stat-card">
-                <div class="val" style="color: #00f2fe;" id="fc-fastpath-latency">&lt; 5 ms</div>
+                <div class="val" style="color: var(--accent);" id="fc-fastpath-latency">&lt; 5 ms</div>
                 <div class="lbl">Deterministic Fast-Path</div>
               </div>
               <div class="evo-stat-card">
-                <div class="val" style="color: #22c55e;" id="fc-cache-latency">&lt; 0.5 ms</div>
+                <div class="val" style="color: #16a34a;" id="fc-cache-latency">&lt; 0.5 ms</div>
                 <div class="lbl">Semantic RAM Cache</div>
               </div>
             </div>
 
             <div class="evo-stats-grid" style="margin-top: 8px;">
               <div class="evo-stat-card">
-                <div class="val" style="color: #a855f7;">800+ tok/s</div>
+                <div class="val" style="color: #7c3aed;">800+ tok/s</div>
                 <div class="lbl">Groq Cloud Speed</div>
               </div>
               <div class="evo-stat-card">
-                <div class="val" style="color: #eab308;">45 TOPS</div>
+                <div class="val" style="color: #d97706;">45 TOPS</div>
                 <div class="lbl">Snapdragon NPU</div>
               </div>
             </div>
@@ -1016,8 +1016,8 @@
             <div class="panel-section-title mt-16">
               <span>🚀 Real-Time Speed Benchmark</span>
             </div>
-            <div style="padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
-              <select id="fast-benchmark-prompt" class="ag-input-sm" style="margin-bottom: 6px; background: #0f172a; color: white;">
+            <div class="aux-module-card">
+              <select id="fast-benchmark-prompt" class="ag-input-sm" style="margin-bottom: 6px; width: 100%;">
                 <option value="system vitals">⚡ System Hardware Vitals (Fast-Path Route)</option>
                 <option value="todays schedule">🗓️ Daily Agenda (RAM Pre-Warmed Cache)</option>
                 <option value="summarize my emails">📧 Inbox Briefing (Pre-Warmed Cache)</option>
@@ -1030,7 +1030,7 @@
             <div class="panel-section-title mt-16">
               <span>⏱️ Benchmark Latency Breakdown</span>
             </div>
-            <div id="fast-benchmark-output" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; font-size: 12px; line-height: 1.5; color: #e2e8f0; min-height: 80px;">
+            <div id="fast-benchmark-output" class="aux-output-card" style="min-height: 80px;">
               Click 'Execute Benchmark' to test round-trip latency across the Fast Cortex pipeline.
             </div>
           </div>
@@ -1063,13 +1063,13 @@
             <div class="panel-section-title mt-16">
               <span>💳 Razorpay Webhook & Payment Simulator</span>
             </div>
-            <div style="margin-top: 8px; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;">
+            <div class="aux-module-card" style="margin-top: 8px;">
               <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Test payment capture, automated delivery fulfillment, and revenue updates:</div>
               <div style="display: flex; gap: 6px; margin-bottom: 6px;">
                 <input type="text" id="sim-pay-venture" class="ag-input-sm" value="CogniGuard Cyber" placeholder="Venture" style="flex: 2;" />
                 <input type="number" id="sim-pay-amount" class="ag-input-sm" value="45000" placeholder="Amount (INR)" style="flex: 1;" />
               </div>
-              <input type="text" id="sim-pay-email" class="ag-input-sm" value="siddharth@apexfintech.io" placeholder="Client Email" style="margin-bottom: 8px;" />
+              <input type="text" id="sim-pay-email" class="ag-input-sm" value="siddharth@apexfintech.io" placeholder="Client Email" style="margin-bottom: 8px; width: 100%;" />
               <button class="ag-btn-xs primary" onclick="simulatePaymentWebhookUI()" style="width: 100%;">Trigger Simulated Payment Capture Webhook</button>
             </div>
 
@@ -1138,20 +1138,20 @@
 
       <div class="model-cards-scroll">
         <!-- Live Hugging Face Hub Search & Adoption Section -->
-        <div style="margin: 0 0 16px 0; background: rgba(255,210,30,0.05); border: 1px solid rgba(255,210,30,0.25); border-radius: 12px; padding: 14px;">
+        <div class="aux-module-card" style="margin: 0 0 16px 0; border-color: rgba(245, 158, 11, 0.3); background: #fefce8;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <div style="display: flex; align-items: center; gap: 8px;">
               <span style="font-size: 18px;">🤗</span>
-              <strong style="color: #ffd21e; font-size: 13px;">Hugging Face Hub Live Explorer & Autonomous Model Adoption</strong>
+              <strong style="color: #b45309; font-size: 13px;">Hugging Face Hub Live Explorer & Autonomous Model Adoption</strong>
             </div>
-            <span class="badge" style="background: rgba(255,210,30,0.18); color: #ffd21e; font-size: 10px;">Free Serverless Cloud AI</span>
+            <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #b45309; font-size: 10px;">Free Serverless Cloud AI</span>
           </div>
           <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 10px 0; line-height: 1.4;">
             Search and adopt any state-of-the-art open-weights model from Hugging Face Hub for AETHER's autonomous development and reasoning.
           </p>
           <div style="display: flex; gap: 8px;">
-            <input type="text" id="hf-search-query" class="ag-input-sm" placeholder="e.g. qwen, deepseek, llama, starcoder, mistral..." style="flex: 1; font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,210,30,0.3); border-radius: 8px; color: #fff; padding: 8px 12px;" onkeydown="if(event.key==='Enter') searchHuggingFaceHub()">
-            <button class="ag-btn-sm" onclick="searchHuggingFaceHub()" style="background: #ffd21e; color: #000; font-weight: 600; border: none; padding: 0 16px; border-radius: 8px; cursor: pointer; white-space: nowrap;">Search HF Hub</button>
+            <input type="text" id="hf-search-query" class="ag-input-sm" placeholder="e.g. qwen, deepseek, llama, starcoder, mistral..." style="flex: 1; font-family: 'JetBrains Mono', monospace;" onkeydown="if(event.key==='Enter') searchHuggingFaceHub()">
+            <button class="ag-btn-sm" onclick="searchHuggingFaceHub()" style="background: #f59e0b; color: #ffffff; font-weight: 600; border: none; padding: 0 16px; border-radius: 8px; cursor: pointer; white-space: nowrap;">Search HF Hub</button>
           </div>
           <div id="hf-search-results" style="display: none; margin-top: 12px; max-height: 220px; overflow-y: auto; flex-direction: column; gap: 8px;"></div>
         </div>
@@ -1213,10 +1213,10 @@
 
       <div class="api-providers-list" style="display: flex; flex-direction: column; gap: 14px;">
         <!-- Groq -->
-        <div class="provider-key-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px;">
+        <div class="provider-key-card aux-module-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <div>
-              <strong style="color: #f97316; font-size: 14px;">⚡ Groq Cloud (Free Tier)</strong>
+              <strong style="color: #ea580c; font-size: 14px;">⚡ Groq Cloud (Free Tier)</strong>
               <span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">800–1200 tok/s · Llama 3.3 70B & DeepSeek R1</span>
             </div>
             <span id="badge-groq-status" class="badge" style="font-size: 10px;">Checking...</span>
@@ -1225,10 +1225,10 @@
         </div>
 
         <!-- Google Gemini -->
-        <div class="provider-key-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px;">
+        <div class="provider-key-card aux-module-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <div>
-              <strong style="color: #60a5fa; font-size: 14px;">✨ Google Gemini (Free Tier)</strong>
+              <strong style="color: #2563eb; font-size: 14px;">✨ Google Gemini (Free Tier)</strong>
               <span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">Gemini 2.5 Pro & Flash · 1M-2M Context</span>
             </div>
             <span id="badge-gemini-status" class="badge" style="font-size: 10px;">Checking...</span>
@@ -1237,10 +1237,10 @@
         </div>
 
         <!-- OpenRouter -->
-        <div class="provider-key-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px;">
+        <div class="provider-key-card aux-module-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <div>
-              <strong style="color: #a855f7; font-size: 14px;">🔮 OpenRouter Aggregator</strong>
+              <strong style="color: #7c3aed; font-size: 14px;">🔮 OpenRouter Aggregator</strong>
               <span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">Claude 3.7 Sonnet, DeepSeek-R1, GPT-4o, o3-mini</span>
             </div>
             <span id="badge-openrouter-status" class="badge" style="font-size: 10px;">Checking...</span>
@@ -1249,10 +1249,10 @@
         </div>
 
         <!-- DeepSeek -->
-        <div class="provider-key-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px;">
+        <div class="provider-key-card aux-module-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <div>
-              <strong style="color: #06b6d4; font-size: 14px;">🧠 DeepSeek Direct</strong>
+              <strong style="color: #0891b2; font-size: 14px;">🧠 DeepSeek Direct</strong>
               <span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">DeepSeek-R1 Reasoning & DeepSeek-V3</span>
             </div>
             <span id="badge-deepseek-status" class="badge" style="font-size: 10px;">Checking...</span>
@@ -1261,10 +1261,10 @@
         </div>
 
         <!-- Kaggle Cloud GPU Acceleration -->
-        <div class="provider-key-card" style="background: rgba(32, 190, 255, 0.05); border: 1px solid rgba(32, 190, 255, 0.2); border-radius: 12px; padding: 14px;">
+        <div class="provider-key-card aux-module-card" style="background: #f0fdf4; border-color: #86efac;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <div>
-              <strong style="color: #20beff; font-size: 14px;">🚀 Kaggle Cloud GPU (30+ Hrs/Week Free)</strong>
+              <strong style="color: #059669; font-size: 14px;">🚀 Kaggle Cloud GPU (30+ Hrs/Week Free)</strong>
               <span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">Tesla T4 x 2 / P100 · Autonomous QLoRA Fine-Tuning</span>
             </div>
             <span id="badge-kaggle-status" class="badge" style="font-size: 10px;">Checking...</span>
@@ -1277,94 +1277,94 @@
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-        <button class="ag-btn-secondary" onclick="closeApiKeysModal()">Cancel</button>
-        <button class="ag-btn-primary" onclick="saveApiKeys()">💾 Save & Connect</button>
+        <button class="ag-btn-sm secondary" onclick="closeApiKeysModal()">Cancel</button>
+        <button class="ag-btn-sm primary" onclick="saveApiKeys()">💾 Save & Connect</button>
       </div>
+    </div>
+  </div>
     </div>
   </div>
 
   <!-- Sovereign Online Gateway Modal -->
-  <div id="online-gateway-modal" class="ag-modal-overlay" style="display: none;">
-    <div class="ag-modal-box" style="max-width: 640px; width: 92%;">
-      <div class="ag-modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; margin-bottom: 16px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 22px;">🌐</span>
-          <div>
-            <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #fff;">Sovereign Online Gateway</h3>
-            <p style="margin: 0; font-size: 12px; color: var(--text-muted);">100% Free Public AI Inference & Zero-Cost Remote Web Tunneling</p>
-          </div>
+  <div id="online-gateway-modal" class="ag-modal-backdrop" style="display: none;" onclick="if(event.target===this)closeOnlineGatewayModal()">
+    <div class="ag-modal-card" style="max-width: 640px; width: 92%;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span style="font-size: 20px;">🌐</span>
+          <h2>Sovereign Online Gateway</h2>
+          <span class="badge green">100% Free Public AI</span>
         </div>
-        <button class="ag-modal-close" onclick="closeOnlineGatewayModal()">✕</button>
+        <button class="modal-close-btn" onclick="closeOnlineGatewayModal()">✕</button>
       </div>
 
-      <div class="online-modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+      <div class="online-modal-body" style="display: flex; flex-direction: column; gap: 16px; margin-top: 14px;">
         <!-- Public Tunnel Status Card -->
-        <div style="background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 14px;">
+        <div class="aux-module-card" style="background: #f0fdf4; border-color: #86efac;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <strong style="color: #10b981; font-size: 14px;">🚀 Public HTTPS Web Tunnel</strong>
-            <span id="badge-tunnel-live" class="badge" style="background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px;">CHECKING...</span>
+            <strong style="color: #15803d; font-size: 14px;">🚀 Public HTTPS Web Tunnel</strong>
+            <span id="badge-tunnel-live" class="badge" style="background: #dcfce7; color: #15803d; font-size: 10px;">CHECKING...</span>
           </div>
           <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 10px 0;">Access AETHER Web HUD & voice companion from any smartphone or browser worldwide:</p>
           <div style="display: flex; gap: 8px;">
-            <input type="text" id="tunnel-public-url" class="ag-input-sm" readonly style="flex: 1; font-family: 'JetBrains Mono', monospace; color: #6ee7b7; background: rgba(0,0,0,0.3);" value="Checking status...">
-            <button class="ag-btn-secondary" onclick="copyTunnelUrl()" title="Copy Public URL">📋 Copy</button>
-            <button class="ag-btn-primary" id="btn-toggle-tunnel" onclick="toggleOnlineTunnel()">Start Tunnel</button>
+            <input type="text" id="tunnel-public-url" class="ag-input-sm" readonly style="flex: 1; font-family: 'JetBrains Mono', monospace; font-weight: 500;" value="Checking status...">
+            <button class="ag-btn-sm secondary" onclick="copyTunnelUrl()" title="Copy Public URL">📋 Copy</button>
+            <button class="ag-btn-sm primary" id="btn-toggle-tunnel" onclick="toggleOnlineTunnel()">Start Tunnel</button>
           </div>
         </div>
 
         <!-- Free Online AI Reasoning Providers -->
-        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px;">
+        <div class="aux-module-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <strong style="color: #60a5fa; font-size: 14px;">🤖 Zero-Cost Public AI Inference (Pollinations.ai)</strong>
-            <span class="badge" style="background: rgba(96, 165, 250, 0.2); color: #60a5fa; font-size: 10px;">$0.00 / 0 API Keys</span>
+            <strong style="color: var(--accent); font-size: 14px;">🤖 Zero-Cost Public AI Inference (Pollinations.ai)</strong>
+            <span class="badge blue">$0.00 / 0 API Keys</span>
           </div>
           <p style="font-size: 12px; color: var(--text-muted); margin: 0 0 10px 0;">Leading open-source reasoning models routed via free public gateway:</p>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; font-family: 'JetBrains Mono', monospace;">
-            <div style="background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">• openai-fast (GPT-OSS 20B)</div>
-            <div style="background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">• deepseek (R1 Reasoning)</div>
-            <div style="background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">• qwen (2.5 Coder 32B)</div>
-            <div style="background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">• mistral (Nemo 12B)</div>
+            <div class="aux-output-card" style="padding: 6px 10px;">• openai-fast (GPT-OSS 20B)</div>
+            <div class="aux-output-card" style="padding: 6px 10px;">• deepseek (R1 Reasoning)</div>
+            <div class="aux-output-card" style="padding: 6px 10px;">• qwen (2.5 Coder 32B)</div>
+            <div class="aux-output-card" style="padding: 6px 10px;">• mistral (Nemo 12B)</div>
           </div>
         </div>
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-        <button class="ag-btn-primary" onclick="closeOnlineGatewayModal()">Done</button>
+        <button class="ag-btn-sm primary" onclick="closeOnlineGatewayModal()">Done</button>
       </div>
     </div>
   </div>
 
   <!-- ═══ AUTONOMOUS OPERATOR PANEL ═══ -->
-  <div id="operator-panel" style="display:none;" class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-xl flex items-center justify-center p-4">
-    <div class="w-full max-w-5xl bg-[#0E0F14] border border-slate-700/60 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+  <div id="operator-panel" style="display:none;" class="ag-modal-backdrop">
+    <div class="ag-modal-card" style="max-width: 960px; width: 95%; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;">
       <!-- Header -->
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800">
-        <div class="flex items-center gap-3">
-          <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-lg shadow-emerald-500/50"></div>
-          <span class="text-white font-semibold text-base">LEON Autonomous Operator</span>
-          <span id="op-scheduler-badge" class="text-[10px] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full border border-slate-700">loading…</span>
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200" style="border-bottom: 1px solid var(--border-subtle); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background: #16a34a;"></div>
+          <span style="font-weight: 600; font-size: 15px; color: var(--text-primary);">LEON Autonomous Operator</span>
+          <span id="op-scheduler-badge" class="badge" style="font-family: 'JetBrains Mono', monospace; font-size: 11px;">loading…</span>
         </div>
-        <button onclick="closeOperatorPanel()" class="text-slate-500 hover:text-white transition-colors text-xl font-light">✕</button>
+        <button onclick="closeOperatorPanel()" class="modal-close-btn">✕</button>
       </div>
 
       <!-- Tab Bar -->
-      <div class="flex border-b border-slate-800 px-6">
-        <button onclick="opTab('inbox')" id="tab-inbox" class="op-tab active-tab px-4 py-3 text-sm font-medium text-white border-b-2 border-indigo-500">Inbox</button>
-        <button onclick="opTab('payments')" id="tab-payments" class="op-tab px-4 py-3 text-sm font-medium text-slate-400 hover:text-white border-b-2 border-transparent">Payments</button>
-        <button onclick="opTab('leads')" id="tab-leads" class="op-tab px-4 py-3 text-sm font-medium text-slate-400 hover:text-white border-b-2 border-transparent">Leads</button>
-        <button onclick="opTab('health')" id="tab-health" class="op-tab px-4 py-3 text-sm font-medium text-slate-400 hover:text-white border-b-2 border-transparent">Portfolio Health</button>
-        <button onclick="opTab('log')" id="tab-log" class="op-tab px-4 py-3 text-sm font-medium text-slate-400 hover:text-white border-b-2 border-transparent">Ops Log</button>
+      <div style="display: flex; border-bottom: 1px solid var(--border-subtle); padding: 0 20px; background: var(--bg-surface-secondary);">
+        <button onclick="opTab('inbox')" id="tab-inbox" class="op-tab active-tab" style="padding: 10px 16px; font-size: 13px; font-weight: 500; border-bottom: 2px solid var(--accent); background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; color: var(--accent);">Inbox</button>
+        <button onclick="opTab('payments')" id="tab-payments" class="op-tab" style="padding: 10px 16px; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; color: var(--text-secondary);">Payments</button>
+        <button onclick="opTab('leads')" id="tab-leads" class="op-tab" style="padding: 10px 16px; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; color: var(--text-secondary);">Leads</button>
+        <button onclick="opTab('health')" id="tab-health" class="op-tab" style="padding: 10px 16px; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; color: var(--text-secondary);">Portfolio Health</button>
+        <button onclick="opTab('log')" id="tab-log" class="op-tab" style="padding: 10px 16px; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; color: var(--text-secondary);">Ops Log</button>
       </div>
 
       <!-- Content -->
-      <div id="op-content" class="flex-1 overflow-y-auto p-6 text-sm text-slate-300 space-y-3">
-        <div class="text-slate-500 text-center py-8">Loading…</div>
+      <div id="op-content" style="flex: 1; overflow-y: auto; padding: 20px; font-size: 13px; color: var(--text-primary); line-height: 1.6; min-height: 300px;">
+        <div style="color: var(--text-muted); text-align: center; padding: 40px 0;">Loading…</div>
       </div>
 
       <!-- Footer -->
-      <div class="px-6 py-3 border-t border-slate-800 flex items-center justify-between">
-        <span id="op-last-refresh" class="text-xs text-slate-600">Refreshing every 60s</span>
-        <button onclick="refreshOperatorPanel()" class="text-xs text-indigo-400 hover:text-indigo-300">↺ Refresh now</button>
+      <div style="padding: 12px 20px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; background: var(--bg-surface-secondary);">
+        <span id="op-last-refresh" style="font-size: 11px; color: var(--text-muted);">Refreshing every 60s</span>
+        <button onclick="refreshOperatorPanel()" class="ag-btn-xs secondary">↺ Refresh now</button>
       </div>
     </div>
   </div>

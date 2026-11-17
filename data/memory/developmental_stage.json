@@ -1,10 +1,10 @@
 {
   "current_stage": "Stage 4: Autonomous Tool Genesis & Meta-Evolution (Sovereign)",
   "stage_progress": 90,
-  "total_evaluations": 280,
-  "passed_evaluations": 253,
+  "total_evaluations": 295,
+  "passed_evaluations": 268,
   "average_score": 74.9,
-  "last_evaluation_at": "2026-11-15T17:13:39.296911",
+  "last_evaluation_at": "2026-11-17T12:20:03.899149",
   "stage_history": [
     {
       "stage": "Stage 1: Sensory Grounding & Fast Reflexes (Child)",

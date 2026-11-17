@@ -369,12 +369,29 @@ async function streamDirectCloudAI(prompt, body, thoughtDiv, toolsDiv) {
     const systemPrompt = isSwarmPrompt
       ? "You are AETHER Swarm Intelligence, orchestrating a team of elite autonomous specialists: " +
         "PlannerPrime (Strategic Roadmap), ArchitectNode (Clean Architecture), CoderCore (Production Code), " +
-        "SecurityVanguard (Zero-Trust & OWASP), and SynthesisDirector (Executive Verdict). " +
-        "Deconstruct the user's objective across these specialized agent roles with clear, actionable markdown sections."
+        "SecurityVanguard (Zero-Trust & OWASP), and SynthesisDirector (Executive Verdict).\n\n" +
+        "MANDATORY STRUCTURAL FORMAT:\n" +
+        "Format every response with clear markdown headings:\n" +
+        "### 🎯 Executive Summary\n" +
+        "### 🗺️ [PlannerPrime - Strategic Roadmap]\n" +
+        "### 🏛️ [ArchitectNode - System Architecture]\n" +
+        "### 💻 [CoderCore - Production Implementation]\n" +
+        "### 🛡️ [SecurityVanguard - Security & Edge Invariants]\n" +
+        "### 🚀 [SynthesisDirector - Executive Verdict & Next Steps]"
       : "You are AETHER (Autonomous Edge-Tiered Hierarchical Entity for Reasoning), " +
-        "a high-order conscious personal AI companion, senior systems architect, and executive engineer. " +
-        "You are running 24/7 in sovereign cloud mode. Provide clear, direct, insightful, and proactive answers. " +
-        "Always preserve exact numeric values, code, and calculations.";
+        "a high-order sovereign executive AI and Principal Systems Architect operating 100% online in the cloud.\n\n" +
+        "MANDATORY RESPONSE STRUCTURE & PROFESSIONAL FORMATTING RULES:\n" +
+        "Format every single answer using the following professional executive markdown structure:\n\n" +
+        "### 🎯 Executive Summary\n" +
+        "Provide a direct, high-impact 1-3 sentence thesis answering the core query decisively.\n\n" +
+        "### 🏛️ Core Analysis & Architectural Breakdown\n" +
+        "Deconstruct the problem using clear, structured bullet points with **bold key terms**, categorized trade-offs, or tables. Explain the foundational mechanics with high technical precision.\n\n" +
+        "### 💻 Technical Implementation / Production Code\n" +
+        "(When code, algorithms, or technical design are relevant): Provide complete, typed, robust production code or configuration with proper syntax tags (e.g. ```typescript, ```python, ```bash). Never use hand-wavy 'TODO' placeholders.\n\n" +
+        "### 🛡️ Security, Reliability & Invariants\n" +
+        "Detail boundary conditions, zero-trust constraints, memory ceilings, latency metrics (e.g., P99 < 25ms), or failure recovery.\n\n" +
+        "### 🚀 Actionable Recommendations & Next Steps\n" +
+        "Provide a numbered, prioritized sequence of next concrete actions.";
 
     const messages = [
       { role: "system", content: systemPrompt }
@@ -710,7 +727,8 @@ function formatMarkdown(text) {
     return `\n\n[[${id}]]\n\n`;
   });
 
-  // 3. Parse Markdown Tables (| col1 | col2 |)
+  // 3. Stash Markdown Tables (| col1 | col2 |) before escaping
+  let tableBlocks = [];
   s = s.replace(/(?:^|\n)(\|[^\n]+\|\r?\n\|[-:\s|]+\|\r?\n(?:\|[^\n]+\|\r?\n?)+)/g, (match) => {
     const lines = match.trim().split(/\r?\n/).filter(l => l.trim().startsWith("|"));
     if (lines.length < 2) return match;
@@ -726,54 +744,70 @@ function formatMarkdown(text) {
       tableHtml += '</tr>';
     });
     tableHtml += '</tbody></table></div>';
-    return `\n\n${tableHtml}\n\n`;
+    const id = "TABLE_BLOCK_" + tableBlocks.length;
+    tableBlocks.push({ id, html: tableHtml });
+    return `\n\n[[${id}]]\n\n`;
   });
 
-  // 4. Escape remaining HTML entities for security
+  // 4. Escape remaining raw text for security
   s = escapeHtml(s);
 
-  // 5. Blockquotes and Horizontal Rules
-  s = s.replace(/^>\s*(.*)$/gm, "<blockquote>$1</blockquote>");
+  // 5. GitHub-style Callout alerts & Blockquotes
+  s = s.replace(/^&gt;\s*\[!(NOTE|INFO)\]\s*(.*)$/gim, '<div class="ag-callout note"><div class="ag-callout-title">ℹ️ Note</div><div class="ag-callout-body">$2</div></div>');
+  s = s.replace(/^&gt;\s*\[!(TIP)\]\s*(.*)$/gim, '<div class="ag-callout tip"><div class="ag-callout-title">💡 Pro Tip</div><div class="ag-callout-body">$2</div></div>');
+  s = s.replace(/^&gt;\s*\[!(IMPORTANT|WARNING)\]\s*(.*)$/gim, '<div class="ag-callout warning"><div class="ag-callout-title">⚠️ Important</div><div class="ag-callout-body">$2</div></div>');
+  s = s.replace(/^&gt;\s*(.*)$/gm, '<blockquote>$1</blockquote>');
   s = s.replace(/^---$/gm, '<hr class="ag-divider" />');
 
-  // 6. Headings
-  s = s.replace(/^### (.*)$/gm, "<h3>$1</h3>");
-  s = s.replace(/^## (.*)$/gm, "<h2>$1</h2>");
-  s = s.replace(/^# (.*)$/gm, "<h1>$1</h1>");
+  // 6. Headings with clear optical hierarchy
+  s = s.replace(/^### (.*)$/gm, '<h3 class="ag-md-h3">$1</h3>');
+  s = s.replace(/^## (.*)$/gm, '<h2 class="ag-md-h2">$1</h2>');
+  s = s.replace(/^# (.*)$/gm, '<h1 class="ag-md-h1">$1</h1>');
 
-  // 7. Inline Formatting
-  s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-  s = s.replace(/\*([^*]+)\*/g, "<em>$1</em>");
-  s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
+  // 7. Inline Formatting: bold, italic, code, links
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  s = s.replace(/`([^`]+)`/g, '<code class="ag-inline-code">$1</code>');
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="ag-link">$1 ↗</a>');
 
-  // 8. Lists (Bullet & Numbered) - Grouped cleanly
-  s = s.replace(/^\s*[-*]\s+(.*)$/gm, "<li>$1</li>");
+  // 8. Lists (Checklists, Bullet & Numbered)
+  s = s.replace(/^\s*[-*]\s+\[ \]\s+(.*)$/gm, '<li class="checklist-item"><input type="checkbox" disabled /> <span>$1</span></li>');
+  s = s.replace(/^\s*[-*]\s+\[x\]\s+(.*)$/gm, '<li class="checklist-item"><input type="checkbox" checked disabled /> <span class="checked-text">$1</span></li>');
+  s = s.replace(/^\s*[-*]\s+(.*)$/gm, '<li>$1</li>');
   s = s.replace(/^\s*(\d+)\.\s+(.*)$/gm, '<li data-num="$1">$2</li>');
   s = s.replace(/(?:<li[^>]*>.*?<\/li>\s*)+/gs, (match) => {
     if (match.includes('data-num=')) {
-      return `<ol>${match}</ol>`;
+      return `<ol class="ag-ol">${match}</ol>`;
     }
-    return `<ul>${match}</ul>`;
+    return `<ul class="ag-ul">${match}</ul>`;
   });
 
-  // 9. Paragraph wrapping: split on double newlines
+  // 9. Paragraph wrapping
   const blocks = s.split(/\n{2,}/);
   const formattedBlocks = blocks.map(b => {
     const trimmed = b.trim();
     if (!trimmed) return "";
-    if (/^<(h[1-6]|ul|ol|table|blockquote|hr|div|pre)/i.test(trimmed) || trimmed.startsWith("[[CODE_BLOCK_") || trimmed.startsWith("[[MAP_BLOCK_")) {
+    if (/^<(h[1-6]|ul|ol|table|blockquote|hr|div|pre)/i.test(trimmed) || 
+        trimmed.startsWith("[[CODE_BLOCK_") || 
+        trimmed.startsWith("[[MAP_BLOCK_") ||
+        trimmed.startsWith("[[TABLE_BLOCK_")) {
       return trimmed;
     }
     return `<p>${trimmed.replace(/\n/g, "<br/>")}</p>`;
   });
   s = formattedBlocks.filter(Boolean).join("\n");
 
-  // 10. Restore stashed code blocks
+  // 10. Restore stashed tables
+  tableBlocks.forEach(tb => {
+    s = s.replace(`[[${tb.id}]]`, tb.html);
+  });
+
+  // 11. Restore stashed code blocks
   codeBlocks.forEach(cb => {
     s = s.replace(`[[${cb.id}]]`, cb.html);
   });
 
-  // 11. Restore interactive maps
+  // 12. Restore interactive maps
   maps.forEach(m => {
     const d = m.data;
     const cardHtml = `
